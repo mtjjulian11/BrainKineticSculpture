@@ -36,6 +36,20 @@ void setup() {
 //------------------------------------- LOOP ------------------------------------------
 
 void loop() {
+
+  for (int i = 0; i < NUM_READINGS; i++) {
+    if (brain.update()) {
+      Ddata[i] = brain.readDelta();
+    }
+  }
+  Serial.print("Los valores leídos en setup son: ");
+  for (int i = 0; i < NUM_READINGS; i++) {
+    Serial.print(Ddata[i]);
+    Serial.print(" ");
+  }
+  Serial.println();
+
+
   /*
     // The .readCSV() function returns a string (well, char*) listing the most recent brain data, in the following format:
     // "signal strength, attention, meditation, delta, theta, low alpha, high alpha, low beta, high beta, low gamma, high gamma"
