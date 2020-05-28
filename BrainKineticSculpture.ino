@@ -86,7 +86,7 @@ void loop() {
       Ddata_avg += Ddata[i];
     }
     Serial.print("El promedio de Delta es ");
-    Serial.println(Ddata_avg / NUM_READINGS);
+    Serial.println(constrain((Ddata_avg / NUM_READINGS), 500, 999999));
 
 
   }
