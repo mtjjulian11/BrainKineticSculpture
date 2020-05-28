@@ -87,9 +87,9 @@ void setup() {
 void loop() {
 
   if (brain.update()) {
-    if (Ddata_idx == NUM_READINGS && THdata_idx == NUM_READINGS && LAdata_idx == NUM_READINGS && 
-    HAdata_idx == NUM_READINGS && LBdata == NUM_READINGS && HBdata_idx == NUM_READINGS && LGdata_idx == NUM_READINGS
-    MGdata_idx == NUM_READINGS) {
+    if ((Ddata_idx == NUM_READINGS) && (THdata_idx == NUM_READINGS) && (LAdata_idx == NUM_READINGS) && 
+    (HAdata_idx == NUM_READINGS) && (LBdata == NUM_READINGS) && (HBdata_idx == NUM_READINGS) && (LGdata_idx == NUM_READINGS) &&
+    (MGdata_idx == NUM_READINGS)) {
       
   Ddata_idx = 0;
   THdata_idx = 0;
@@ -108,7 +108,7 @@ void loop() {
     THdata_idx++;
     
     LAdata[LAdata_idx] = brain.readLowAlpha();
-    LADdata_idx++;
+    LAdata_idx++;
 
     HAdata[HAdata_idx] = brain.readHighAlpha();
     HAdata_idx++;
