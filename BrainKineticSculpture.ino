@@ -10,7 +10,7 @@ Brain brain(Serial);
 // ------------------------ Variables ----------------------
 
 //Holds Delta signal value (sum)
-int Ddata[NUM_READINGS];
+unsigned long Ddata[NUM_READINGS];
 byte Ddata_ptr;
 
 
@@ -44,7 +44,7 @@ void loop() {
       Ddata[i] = brain.readDelta();
     }
   }
-  Serial.print("------>>>>> Los valores leídos en setup son: ");
+  Serial.print("------>>>>> Los valores leídos en loop son: ");
   for (int i = 0; i < NUM_READINGS; i++) {
     Serial.print(Ddata[i]);
     Serial.print(" ");
