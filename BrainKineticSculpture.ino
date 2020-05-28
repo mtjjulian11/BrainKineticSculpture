@@ -12,45 +12,43 @@ Brain brain(Serial);
 //Holds Delta signal value (sum)
 unsigned long Ddata[NUM_READINGS];
 unsigned long Ddata_avg;
-byte Ddata_ptr;
-
 
 
 void setup() {
   // Start the hardware serial.
   Serial.begin(9600);
 
-  for (int i = 0; i < NUM_READINGS; i++) {
-    while (!brain.update()) {}
-    Ddata[i] = brain.readDelta();
-  }
-  Serial.print("Los valores leídos en setup son: ");
-  for (int i = 0; i < NUM_READINGS; i++) {
-    Serial.print(Ddata[i]);
-    Serial.print(" ");
-  }
-  Serial.println();
 }
 
 
 //------------------------------------- LOOP ------------------------------------------
 
 void loop() {
-  Ddata_avg=0;
+  Ddata_avg = 0;
+
+  //For de adquisición de datos
   for (int i = 0; i < NUM_READINGS; i++) {
     while (!brain.update()) {}
     //Serial.println(brain.readErrors());
     //Serial.println(brain.readCSV());
     Ddata[i] = brain.readDelta();
     Ddata_avg = Ddata_avg + Ddata[i];
+
+    Bdata[i] = brain.readBeta();
+    Bdata_avg = Bdata_avg + Bdata[i];
   }
-  Serial.print("------>>>>> Los valores leídos en loop son: ");
-  for (int i = 0; i < NUM_READINGS; i++) {
-    Serial.print(Ddata[i]);
-    Serial.print(" ");
-  }
-  Serial.print(" y el promedio es de ");
+
+  //For de impresión de datos y promedios
+  //Serial.print("------>>>>> Los valores leídos en loop son: ");
+  //for (int i = 0; i < NUM_READINGS; i++) {
+  //  Serial.print(Ddata[i]);
+  //  Serial.print(" ");
+  //}
+  Serial.print("El promedio es Delta es de ");
   Serial.println(Ddata_avg / NUM_READINGS);
+
+  Serial.print("El prmedio de Beta es de ");
+  Serial.println(Bdata_avg / NUM_READINGS);
 
 
   /*
