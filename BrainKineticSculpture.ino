@@ -11,6 +11,7 @@ Brain brain(Serial);
 
 //Holds Delta signal value (sum)
 unsigned long Ddata[NUM_READINGS];
+byte Ddata_idx;
 unsigned long Ddata_avg;
 
 
@@ -18,16 +19,87 @@ void setup() {
   // Start the hardware serial.
   Serial.begin(9600);
 
+  //Obtenemos los 5 primeros valores
+  for (int i = 0; i < NUM_READINGS; i++) {
+    while (!brain.update()) {}
+
+    Ddata[i] = brain.readDelta();
+    Ddata_avg = Ddata_avg + Ddata[i];
+
+    //Bdata[i] = brain.readBeta();
+    //Bdata_avg = Bdata_avg + Bdata[i];
+
+  }
+  Ddata_idx = 5;
+
 }
 
 
 //------------------------------------- LOOP ------------------------------------------
 
-void loop() {
-  Ddata_avg = 0;
+//ESTADO 0
+//IDX = 5
+//  (0)    (1)     (2)     (3)   (4)
+// __50__|_ 40___|__30__|__20__|__20__|
 
-  //For de adquisición de datos
-  for (int i = 0; i < NUM_READINGS; i++) {
+
+//ESTADO 1 (Entra 33)
+//IDX = 0
+//  (0)    (1)     (2)     (3)   (4)
+// __33__|_ 40___|__30__|__20__|__20__|
+
+
+//ESTADO 1 (Entra 22)
+//IDX = 1
+//  (0)    (1)     (2)     (3)   (4)
+// __33__|_ 22___|__30__|__20__|__20__|
+
+//ESTADO 2 (Entra 11)
+//IDX = 2
+//  (0)    (1)     (2)     (3)   (4)
+// __33__|_ 22___|__11__|__20__|__20__|
+
+//ESTADO 3 (Entra 99)
+//IDX = 3
+//  (0)    (1)     (2)     (3)   (4)
+// __33__|_ 22___|__11__|__99__|__20__|
+
+//ESTADO 4 (Entra 88)
+//IDX = 4
+//  (0)    (1)     (2)     (3)   (4)
+// __33__|_ 22___|__11__|__99__|__88__|
+
+
+
+void loop() {
+
+  if (brain.update()) {
+    if (Ddata_idx == NUM_READINGS) {
+      Ddata_idx = 0;
+    }
+    Ddata[Ddata_idx] = brain.readDelta();
+    Ddata_idx++;
+
+    //calculamos el promedio de las medias móviles
+    Ddata_avg = 0;
+    for (int i = 0; i < NUM_READINGS; i++) {
+      Ddata_avg += Ddata[i];
+    }
+    Serial.print("El promedio de Delta es ");
+    Serial.println(Ddata_avg / NUM_READINGS);
+
+
+  }
+
+
+
+
+
+  /*
+    Ddata_avg = 0;
+
+    //For de adquisición de datos
+    for (int i = 0; i < NUM_READINGS; i++) {
     while (!brain.update()) {}
     //Serial.println(brain.readErrors());
     //Serial.println(brain.readCSV());
@@ -36,20 +108,21 @@ void loop() {
 
     Bdata[i] = brain.readBeta();
     Bdata_avg = Bdata_avg + Bdata[i];
-  }
 
-  //For de impresión de datos y promedios
-  //Serial.print("------>>>>> Los valores leídos en loop son: ");
-  //for (int i = 0; i < NUM_READINGS; i++) {
-  //  Serial.print(Ddata[i]);
-  //  Serial.print(" ");
-  //}
-  Serial.print("El promedio es Delta es de ");
-  Serial.println(Ddata_avg / NUM_READINGS);
+    }
 
-  Serial.print("El prmedio de Beta es de ");
-  Serial.println(Bdata_avg / NUM_READINGS);
+    //For de impresión de datos y promedios
+    //Serial.print("------>>>>> Los valores leídos en loop son: ");
+    //for (int i = 0; i < NUM_READINGS; i++) {
+    //  Serial.print(Ddata[i]);
+    //  Serial.print(" ");
+    //}
+    Serial.print("El promedio es Delta es de ");
+    Serial.println(Ddata_avg / NUM_READINGS);
 
+    Serial.print("El prmedio de Beta es de ");
+    Serial.println(Bdata_avg / NUM_READINGS);
+  */
 
   /*
     // The .readCSV() function returns a string (well, char*) listing the most recent brain data, in the following format:
