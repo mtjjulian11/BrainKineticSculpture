@@ -20,9 +20,8 @@ void setup() {
   Serial.begin(9600);
 
   for (int i = 0; i < NUM_READINGS; i++) {
-    if (brain.update()) {
-      Ddata[i] = brain.readDelta();
-    }
+    while (!brain.update()) {}
+    Ddata[i] = brain.readDelta();
   }
   Serial.print("Los valores leídos en setup son: ");
   for (int i = 0; i < NUM_READINGS; i++) {
@@ -38,11 +37,10 @@ void setup() {
 void loop() {
 
   for (int i = 0; i < NUM_READINGS; i++) {
-    if (brain.update()) {
-      Serial.println(brain.readErrors());
-      Serial.println(brain.readCSV());
-      Ddata[i] = brain.readDelta();
-    }
+    while (!brain.update()) {}
+    Serial.println(brain.readErrors());
+    Serial.println(brain.readCSV());
+    Ddata[i] = brain.readDelta();
   }
   Serial.print("------>>>>> Los valores leídos en loop son: ");
   for (int i = 0; i < NUM_READINGS; i++) {
