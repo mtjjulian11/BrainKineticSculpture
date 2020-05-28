@@ -11,6 +11,7 @@ Brain brain(Serial);
 
 //Holds Delta signal value (sum)
 unsigned long Ddata[NUM_READINGS];
+unsigned long Ddata_avg;
 byte Ddata_ptr;
 
 
@@ -35,19 +36,21 @@ void setup() {
 //------------------------------------- LOOP ------------------------------------------
 
 void loop() {
-
+  Ddata_avg=0;
   for (int i = 0; i < NUM_READINGS; i++) {
     while (!brain.update()) {}
-    Serial.println(brain.readErrors());
-    Serial.println(brain.readCSV());
+    //Serial.println(brain.readErrors());
+    //Serial.println(brain.readCSV());
     Ddata[i] = brain.readDelta();
+    Ddata_avg = Ddata_avg + Ddata[i];
   }
   Serial.print("------>>>>> Los valores leídos en loop son: ");
   for (int i = 0; i < NUM_READINGS; i++) {
     Serial.print(Ddata[i]);
     Serial.print(" ");
   }
-  Serial.println();
+  Serial.print(" y el promedio es de ");
+  Serial.println(Ddata_avg / NUM_READINGS);
 
 
   /*
