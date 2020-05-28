@@ -99,7 +99,7 @@ void setup() {
 
   if (brain.update()) {
 
-    Counter++;
+   // Counter++;
 
     Ddata = brain.readDelta();
 
