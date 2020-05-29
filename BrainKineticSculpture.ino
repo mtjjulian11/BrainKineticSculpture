@@ -2,12 +2,19 @@
 #define CONSTRAIN_HIGH 1000000
 #define CONSTRAIN_LOW 10000
 #define NUM_READINGS 5
+#define NUMPIXELS 16
+#define PIN        6 
+
 
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
+#include <Adafruit_NeoPixel.h>
 //-----------------------  Objects ------------------------
 Brain brain(Serial);
+Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 // ------------------------ Variables ----------------------
+
+
 
 //Holds Delta signal value (sum)
 unsigned long Ddata[NUM_READINGS];
@@ -38,10 +45,14 @@ unsigned long LGdata_avg;
 unsigned long MGdata_avg;
 
 
+
+
 void setup() {
   // Start the hardware serial.
   Serial.begin(9600);
 
+  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+   
   //Obtenemos los 5 primeros valores
   for (int i = 0; i < NUM_READINGS; i++) {
     while (!brain.update()) {}
@@ -170,7 +181,19 @@ void loop() {
       LGdata_avg +=  LGdata[i];
       MGdata_avg +=  MGdata[i];
     }
-           
+
+    if((Ddata_avg / NUM_READINGS)> 700000) {
+
+        for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+
+    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
+    // Here we're using a moderately bright green color:
+    pixels.setPixelColor(i, pixels.Color(0, 150, 0));
+
+    delay(500); // Pause before next pass through loop
+  }
+      
+    }
    
     Serial.print(constrain((Ddata_avg / NUM_READINGS), 500, 999999));
     Serial.print(" , ");
