@@ -1,6 +1,6 @@
 
 #define CONSTRAIN_HIGH 999999
-#define CONSTRAIN_LOW 10000
+#define CONSTRAIN_LOW 100
 #define NUM_READINGS 5
 
 // ---------------------- Libraries ------------------------
@@ -37,6 +37,23 @@ unsigned long HBdata_avg;
 unsigned long LGdata_avg;
 unsigned long MGdata_avg;
 
+unsigned long Ddata_Map;
+unsigned long THdata_Map;
+unsigned long LAdata_Map;
+unsigned long HAdata_Map;
+unsigned long LBdata_Map;
+unsigned long HBdata_Map;
+unsigned long LGdata_Map;
+unsigned long MGdata_Map;
+
+unsigned long Ddata_prom;
+unsigned long THdata_prom;
+unsigned long LAdata_prom;
+unsigned long HAdata_prom;
+unsigned long LBdata_prom;
+unsigned long HBdata_prom;
+unsigned long LGdata_prom;
+unsigned long MGdata_prom;
 
 void setup() {
   // Start the hardware serial.
@@ -171,22 +188,39 @@ void loop() {
       MGdata_avg +=  MGdata[i];
     }
            
-   
-    Serial.print(constrain((Ddata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+ Ddata_prom = Ddata_avg / NUM_READINGS;
+ THdata_prom = THdata_avg / NUM_READINGS;
+ LAdata_prom = LAdata_avg / NUM_READINGS;
+ HAdata_prom = HAdata_avg / NUM_READINGS;
+ LBdata_prom = LBdata_avg / NUM_READINGS;
+ HBdata_prom = HBdata_avg / NUM_READINGS;
+ LGdata_prom = LGdata_avg / NUM_READINGS;
+ MGdata_prom = MGdata_avg / NUM_READINGS;
+
+ Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10,1000);
+ THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LAdata_Map= map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ HAdata_Map= map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LBdata_Map= map(LBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ HBdata_Map= map(HBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LGdata_Map= map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ MGdata_Map= map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+
+    Serial.print(Ddata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((THdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.print(THdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((LAdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.print(LAdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((HAdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.print(HAdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((LBdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.print(LBdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((HBdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.print(HBdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((LGdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.print(LGdata_Map);
     Serial.print(" , ");
-    Serial.println(constrain((MGdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
+    Serial.println(MGdata_Map);
     
      }
 
