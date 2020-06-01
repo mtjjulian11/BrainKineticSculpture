@@ -1,6 +1,6 @@
 
-#define CONSTRAIN_HIGH 100
-#define CONSTRAIN_LOW 10
+#define CONSTRAIN_HIGH 999999
+#define CONSTRAIN_LOW 10000
 #define NUM_READINGS 5
 
 // ---------------------- Libraries ------------------------
