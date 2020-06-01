@@ -47,7 +47,14 @@ unsigned long HBdata_prom;
 unsigned long LGdata_prom;
 unsigned long MGdata_prom;
 
-
+unsigned long Ddata_Map;
+unsigned long THdata_Map;
+unsigned long LAdata_Map;
+unsigned long HAdata_Map;
+unsigned long LBdata_Map;
+unsigned long HBdata_Map;
+unsigned long LGdata_Map;
+unsigned long MGdata_Map;
 
 
 
@@ -97,19 +104,32 @@ void setup() {
 
 void loop() {
 
-  if (brain.update()) {
-    if ((Ddata_idx == NUM_READINGS) && (THdata_idx == NUM_READINGS) && (LAdata_idx == NUM_READINGS) && 
-    (HAdata_idx == NUM_READINGS) && (LBdata == NUM_READINGS) && (HBdata_idx == NUM_READINGS) && (LGdata_idx == NUM_READINGS) &&
-    (MGdata_idx == NUM_READINGS)) {
-      
-  Ddata_idx = 0;
-  THdata_idx = 0;
-  LAdata_idx = 0;
-  HAdata_idx = 0;
-  LBdata_idx = 0;
-  HBdata_idx = 0;
-  LGdata_idx = 0;
-  MGdata_idx = 0;
+
+if (brain.update()) {
+
+   if (Ddata_idx == NUM_READINGS ) {
+       Ddata_idx = 0;
+      }
+    if( THdata_idx == NUM_READINGS){
+       THdata_idx = 0;
+       }
+    if(LAdata_idx == NUM_READINGS){
+       LAdata_idx=0;
+      } 
+    if (HAdata_idx == NUM_READINGS){
+       HAdata_idx = 0;
+      }
+    if(LBdata == NUM_READINGS){
+      LBdata_idx=0;
+      }
+    if(HBdata_idx == NUM_READINGS){
+      HBdata_idx =0;
+      }
+    if(LGdata_idx == NUM_READINGS){
+      LGdata_idx = 0;
+      }
+    if(MGdata_idx == NUM_READINGS){
+      MGdata_idx = 0;
     }
     
     Ddata[Ddata_idx] = brain.readDelta();
@@ -159,6 +179,8 @@ void loop() {
       MGdata_avg +=  MGdata[i];
     }
            
+
+
  Ddata_prom = Ddata_avg / NUM_READINGS;
  THdata_prom = THdata_avg / NUM_READINGS;
  LAdata_prom = LAdata_avg / NUM_READINGS;
@@ -168,24 +190,35 @@ void loop() {
  LGdata_prom = LGdata_avg / NUM_READINGS;
  MGdata_prom = MGdata_avg / NUM_READINGS;
 
+
+ Ddata_Map = map(Ddata_prom, 500,999999,10,100);
+ THdata_Map= map(THdata_prom, 500,999999,10,100);
+ LAdata_Map= map(LAdata_prom, 500,999999,10,100);
+ HAdata_Map= map(HAdata_prom, 500,999999,10,100);
+ LBdata_Map= map(LBdata_prom, 500,999999,10,100);
+ HBdata_Map= map(HBdata_prom, 500,999999,10,100);
+ LGdata_Map= map(LGdata_prom, 500,999999,10,100);
+ MGdata_Map= map(MGdata_prom, 500,999999,10,100);
  
-    Serial.print(constrain((Ddata_prom), 500, 999999));
+ 
+    Serial.print(Ddata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((THdata_prom), 500, 999999));
+    Serial.print(THdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((LAdata_prom), 500, 999999));
+    Serial.print(LAdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((HAdata_prom), 500, 999999));
+    Serial.print(HAdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((LBdata_prom), 500, 999999));
+    Serial.print(LBdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((HBdata_prom), 500, 999999));
+    Serial.print(HBdata_Map);
     Serial.print(" , ");
-    Serial.print(constrain((LGdata_prom), 500, 999999));
+    Serial.print(LGdata_Map);
     Serial.print(" , ");
-    Serial.println(constrain((MGdata_prom), 500, 999999));
-    
-    
-  }
+    Serial.println(MGdata_Map);
+
+
+  }  
+  
 
 }
