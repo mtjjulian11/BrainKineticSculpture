@@ -1,6 +1,6 @@
 
-#define CONSTRAIN_HIGH 1000000
-#define CONSTRAIN_LOW 10000
+#define CONSTRAIN_HIGH 100
+#define CONSTRAIN_LOW 10
 #define NUM_READINGS 5
 
 // ---------------------- Libraries ------------------------
@@ -172,21 +172,21 @@ void loop() {
     }
            
    
-    Serial.print(constrain((Ddata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((Ddata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.print(constrain((THdata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((THdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.print(constrain((LAdata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((LAdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.print(constrain((HAdata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((HAdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.print(constrain((LBdata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((LBdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.print(constrain((HBdata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((HBdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.print(constrain((LGdata_avg / NUM_READINGS), 500, 999999));
+    Serial.print(constrain((LGdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     Serial.print(" , ");
-    Serial.println(constrain((MGdata_avg / NUM_READINGS), 500, 999999));
+    Serial.println(constrain((MGdata_avg / NUM_READINGS), CONSTRAIN_LOW, CONSTRAIN_HIGH));
     
      }
 
