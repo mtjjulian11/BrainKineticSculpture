@@ -66,14 +66,14 @@ unsigned long HBdata_New;
 unsigned long LGdata_New;
 unsigned long MGdata_New;
 
-boolean counterD;
-boolean counterTH;
-boolean counterLA;
-boolean counterHA;
-boolean counterLB;
-boolean counterHB;
-boolean counterLG;
-boolean counterMG;
+int counterD;
+int counterTH;
+int counterLA;
+int counterHA;
+int counterLB;
+int counterHB;
+int counterLG;
+int counterMG;
 
 
 
@@ -231,37 +231,37 @@ if (brain.update()) {
 
 
 
-  if(Ddata_Map< Ddata_New) counterD = true;
- else if (Ddata_Map> Ddata_New) counterD = false;
+  if(Ddata[Ddata_idx]< Ddata[Ddata_idx-1]) counterD = 1;
+ else if (Ddata[Ddata_idx]< Ddata[Ddata_idx-1]) counterD = 2;
 
-  if(THdata_Map< THdata_New) counterTH = true;
- else if (THdata_Map> THdata_New) counterTH = false;
- 
-  if(LAdata_Map< LAdata_New) counterLA = true;
- else if (LAdata_Map> LAdata_New) counterLA = false;
- 
-  if(HAdata_Map< HAdata_New) counterHA = true;
- else if (HAdata_Map> HAdata_New) counterHA = false;
+  if(THdata[THdata_idx]< THdata[THdata_idx-1]) counterTH = 1;
+ else if (THdata[THdata_idx]> THdata[THdata_idx-1]) counterTH = 2;
 
-  if(LBdata_Map< LBdata_New) counterLB = true;
- else if (LBdata_Map> LBdata_New) counterLB = false;
+  if(LAdata[LAdata_idx]< LAdata[LAdata_idx-1]) counterLA = 1;
+ else if (LAdata[LAdata_idx]> LAdata[LAdata_idx-1]) counterLA = 2;
 
-  if(HBdata_Map< HBdata_New) counterHB = true;
- else if (HBdata_Map> HBdata_New) counterHB = false;
+  if(HAdata[HAdata_idx]< HAdata[HAdata_idx-1]) counterHA = 1;
+ else if (HAdata[HAdata_idx]> HAdata[HAdata_idx-1]) counterHA = 2;
 
-  if(LGdata_Map< LGdata_New) counterLG = true;
- else if (LGdata_Map> LGdata_New) counterLG = false;
- 
-  if(MGdata_Map< MGdata_New) counterMG = true;
- else if (MGdata_Map> MGdata_New) counterMG = false;
+  if(LBdata[LBdata_idx]< LBdata[LBdata_idx-1]) counterLB = 1;
+ else if (LBdata[LBdata_idx]> LBdata[LBdata_idx-1]) counterLB = 2;
+
+  if(HBdata[HBdata_idx]< HBdata[HBdata_idx-1]) counterHB = 1;
+ else if (HBdata[HBdata_idx]> HBdata[HBdata_idx-1]) counterHB = 2;
+
+  if(LGdata[LGdata_idx]< LGdata[LGdata_idx-1]) counterLG = 1;
+ else if (LGdata[LGdata_idx]> LGdata[LGdata_idx-1]) counterLG = 2;
+
+  if(MGdata[MGdata_idx]< MGdata[MGdata_idx-1]) counterMG = 1;
+ else if (MGdata[MGdata_idx]> MGdata[MGdata_idx-1]) counterMG = 2;
 
 
 
- 
+
     Serial.print(Ddata_Map);
     Serial.print(" , ");
-      Serial.print(counterD);
-    Serial.print(" , ");
+    Serial.print(counterD);
+     Serial.print(" , ");
     Serial.print(THdata_Map);
     Serial.print(" , ");
      Serial.print(counterTH);
@@ -284,21 +284,23 @@ if (brain.update()) {
     Serial.print(" , ");
     Serial.print(LGdata_Map);
     Serial.print(" , ");
+    Serial.println(MGdata_Map);
       Serial.print(counterLG);
     Serial.print(" , ");
     Serial.print(MGdata_Map);
     Serial.print(" , ");
       Serial.println(counterMG);
-    
 
- Ddata_New = Ddata_Map;
- THdata_New = THdata_Map; 
- LAdata_New = LAdata_Map;
- HAdata_New = HAdata_Map ;
- LBdata_New = LBdata_Map;
- HBdata_New = HBdata_Map;
- LGdata_New = LGdata_Map ;
- MGdata_New = MGdata_Map;
+
+
+ Ddata_New = Ddata[Ddata_idx];
+ THdata_New = THdata[THdata_idx]; 
+ LAdata_New = LAdata[LAdata_idx];
+ HAdata_New = HAdata[HAdata_idx];
+ LBdata_New = LBdata[LBdata_idx];
+ HBdata_New = HBdata[HBdata_idx];
+ LGdata_New = LGdata[LGdata_idx];
+ MGdata_New = MGdata[MGdata_idx];
 
   }  
   
