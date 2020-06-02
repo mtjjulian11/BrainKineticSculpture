@@ -116,6 +116,15 @@ void loop() {
 
 if (brain.update()) {
 
+  Ddata_idx = 0;
+  THdata_idx = 0;
+  LAdata_idx = 0;
+  HAdata_idx = 0;
+  LBdata_idx = 0;
+  HBdata_idx = 0;
+  LGdata_idx = 0;
+  MGdata_idx = 0;
+
    if (Ddata_idx == NUM_READINGS ) {
        Ddata_idx = 0;
       }
@@ -210,27 +219,67 @@ if (brain.update()) {
  LGdata_Map= map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
  MGdata_Map= map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
 
- if(Ddata[Ddata_idx]> Ddata[Ddata_idx-1]) counterD = true;
+
+
+  if(Ddata[Ddata_idx]> Ddata[Ddata_idx-1]) counterD = true;
  else if (Ddata[Ddata_idx]< Ddata[Ddata_idx-1]) counterD = false;
+
+  if(THdata[THdata_idx]> THdata[THdata_idx-1]) counterTH = true;
+ else if (THdata[THdata_idx]> THdata[THdata_idx-1]) counterTH = false;
  
+  if(LAdata[LAdata_idx]> LAdata[LAdata_idx-1]) counterLA = true;
+ else if (LAdata[LAdata_idx]> LAdata[LAdata_idx-1]) counterLA = false;
+ 
+  if(HAdata[HAdata_idx]> HAdata[HAdata_idx-1]) counterHA = true;
+ else if (HAdata[HAdata_idx]> HAdata[HAdata_idx-1]) counterHA = false;
+
+  if(LBdata[LBdata_idx]> LBdata[LBdata_idx-1]) counterLB = true;
+ else if (LBdata[LBdata_idx]> LBdata[LBdata_idx-1]) counterLB = false;
+
+  if(HBdata[HBdata_idx]> HBdata[HBdata_idx-1]) counterHB = true;
+ else if (HBdata[HBdata_idx]> HBdata[HBdata_idx-1]) counterHB = false;
+
+  if(LGdata[LGdata_idx]> LGdata[LGdata_idx-1]) counterLG = true;
+ else if (LGdata[LGdata_idx]> LGdata[LGdata_idx-1]) counterLG = false;
+ 
+  if(MGdata[MGdata_idx]> MGdata[MGdata_idx-1]) counterMG = true;
+ else if (MGdata[MGdata_idx]> MGdata[MGdata_idx-1]) counterMG = false;
+
+
+
  
     Serial.print(Ddata_Map);
     Serial.print(" , ");
-    Serial.print(counterD);
+      Serial.print(counterD);
     Serial.print(" , ");
     Serial.print(THdata_Map);
     Serial.print(" , ");
+     Serial.print(counterTH);
+    Serial.print(" , ");
     Serial.print(LAdata_Map);
+    Serial.print(" , ");
+      Serial.print(counterLA);
     Serial.print(" , ");
     Serial.print(HAdata_Map);
     Serial.print(" , ");
+      Serial.print(counterHA);
+    Serial.print(" , ");
     Serial.print(LBdata_Map);
+    Serial.print(" , ");
+      Serial.print(counterLB);
     Serial.print(" , ");
     Serial.print(HBdata_Map);
     Serial.print(" , ");
+      Serial.print(counterHB);
+    Serial.print(" , ");
     Serial.print(LGdata_Map);
     Serial.print(" , ");
-    Serial.println(MGdata_Map);
+      Serial.print(counterLG);
+    Serial.print(" , ");
+    Serial.print(MGdata_Map);
+    Serial.print(" , ");
+      Serial.println(counterMG);
+    
 
 
   }  
