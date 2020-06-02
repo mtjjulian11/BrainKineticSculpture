@@ -1,7 +1,7 @@
 
 #define CONSTRAIN_HIGH 1000000
-#define CONSTRAIN_LOW 10000
-#define NUM_READINGS 5
+#define CONSTRAIN_LOW 1000
+#define NUM_READINGS 10
 
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
@@ -220,7 +220,7 @@ if (brain.update()) {
  LGdata_prom = constrain((LGdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
  MGdata_prom = constrain((MGdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
 
- Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10,1000);
+ Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
  THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
  LAdata_Map= map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
  HAdata_Map= map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
@@ -258,29 +258,31 @@ if (brain.update()) {
 
 
 
-
-    Serial.print(brain.readDelta());
+    Serial.print(brain.readSignalQuality());
+    Serial.print(" , ");
+    
+    Serial.print(Ddata_Map);
     Serial.print(" , ");
        
-    Serial.print(brain.readTheta());
+    Serial.print(THdata_Map);
     Serial.print(" , ");
   
-    Serial.print(brain.readLowAlpha());
+    Serial.print(LAdata_Map);
     Serial.print(" , ");
    
-    Serial.print(brain.readHighAlpha());
+    Serial.print(HAdata_Map);
     Serial.print(" , ");
   
-    Serial.print(brain.readLowBeta());
+    Serial.print(LBdata_Map);
     Serial.print(" , ");
    
-    Serial.print(brain.readHighBeta());
+    Serial.print(HBdata_Map);
     Serial.print(" , ");
    
-    Serial.print(brain.readLowGamma());
+    Serial.print(LGdata_Map);
     Serial.print(" , ");
  
-    Serial.println(brain.readMidGamma());
+    Serial.println(MGdata_Map);
     
   
  
