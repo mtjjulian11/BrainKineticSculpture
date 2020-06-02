@@ -211,14 +211,14 @@ if (brain.update()) {
            
 
 
- Ddata_prom = Ddata_avg / NUM_READINGS;
- THdata_prom = THdata_avg / NUM_READINGS;
- LAdata_prom = LAdata_avg / NUM_READINGS;
- HAdata_prom = HAdata_avg / NUM_READINGS;
- LBdata_prom = LBdata_avg / NUM_READINGS;
- HBdata_prom = HBdata_avg / NUM_READINGS;
- LGdata_prom = LGdata_avg / NUM_READINGS;
- MGdata_prom = MGdata_avg / NUM_READINGS;
+ Ddata_prom = constrain((Ddata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ THdata_prom = constrain((THdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ LAdata_prom = constrain((LAdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ HAdata_prom = constrain((HAdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ LBdata_prom = constrain((LBdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ HBdata_prom = constrain((HBdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ LGdata_prom = constrain((LGdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
+ MGdata_prom = constrain((MGdata_avg / NUM_READINGS),CONSTRAIN_LOW, CONSTRAIN_HIGH);
 
  Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10,1000);
  THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
@@ -259,28 +259,29 @@ if (brain.update()) {
 
 
 
-    Serial.print(Ddata_Map);
+    Serial.print(brain.readDelta());
     Serial.print(" , ");
        
-    Serial.print(THdata_Map);
+    Serial.print(brain.readTheta());
     Serial.print(" , ");
   
-    Serial.print(LAdata_Map);
+    Serial.print(brain.readLowAlpha());
     Serial.print(" , ");
    
-    Serial.print(HAdata_Map);
+    Serial.print(brain.readHighAlpha());
     Serial.print(" , ");
   
-    Serial.print(LBdata_Map);
+    Serial.print(brain.readLowBeta());
     Serial.print(" , ");
    
-    Serial.print(HBdata_Map);
+    Serial.print(brain.readHighBeta());
     Serial.print(" , ");
    
-    Serial.print(LGdata_Map);
+    Serial.print(brain.readLowGamma());
     Serial.print(" , ");
  
-    Serial.println(MGdata_Map);
+    Serial.println(brain.readMidGamma());
+    
   
  
 
