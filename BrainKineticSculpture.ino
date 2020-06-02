@@ -56,6 +56,15 @@ unsigned long HBdata_Map;
 unsigned long LGdata_Map;
 unsigned long MGdata_Map;
 
+boolean counterD;
+boolean counterTH;
+boolean counterLA;
+boolean counterHA;
+boolean counterLB;
+boolean counterHB;
+boolean counterLG;
+boolean counterMG;
+
 
 
 void setup() {
@@ -156,6 +165,8 @@ if (brain.update()) {
     MGdata[MGdata_idx] = brain.readMidGamma();
     MGdata_idx++;
 
+ 
+
     
     //calculamos el promedio de las medias móviles
     Ddata_avg = 0;
@@ -190,18 +201,22 @@ if (brain.update()) {
  LGdata_prom = LGdata_avg / NUM_READINGS;
  MGdata_prom = MGdata_avg / NUM_READINGS;
 
+ Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10,1000);
+ THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LAdata_Map= map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ HAdata_Map= map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LBdata_Map= map(LBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ HBdata_Map= map(HBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LGdata_Map= map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ MGdata_Map= map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
 
- Ddata_Map = map(Ddata_prom, 500,999999,10,100);
- THdata_Map= map(THdata_prom, 500,999999,10,100);
- LAdata_Map= map(LAdata_prom, 500,999999,10,100);
- HAdata_Map= map(HAdata_prom, 500,999999,10,100);
- LBdata_Map= map(LBdata_prom, 500,999999,10,100);
- HBdata_Map= map(HBdata_prom, 500,999999,10,100);
- LGdata_Map= map(LGdata_prom, 500,999999,10,100);
- MGdata_Map= map(MGdata_prom, 500,999999,10,100);
+ if(Ddata[Ddata_idx]> Ddata[Ddata_idx-1]) counterD = true;
+ else if (Ddata[Ddata_idx]< Ddata[Ddata_idx-1]) counterD = false;
  
  
     Serial.print(Ddata_Map);
+    Serial.print(" , ");
+    Serial.print(counterD);
     Serial.print(" , ");
     Serial.print(THdata_Map);
     Serial.print(" , ");
