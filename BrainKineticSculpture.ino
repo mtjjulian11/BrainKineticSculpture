@@ -258,8 +258,8 @@ if (brain.update()) {
 
 
 
-    Serial.print(brain.readSignalQuality());
-    Serial.print(" , ");
+//    Serial.print(brain.readSignalQuality());
+//    Serial.print(" , ");
     
     Serial.print(Ddata_Map);
     Serial.print(" , ");
@@ -282,8 +282,8 @@ if (brain.update()) {
     Serial.print(LGdata_Map);
     Serial.print(" , ");
  
-    Serial.println(MGdata_Map);
-    
+    Serial.print(MGdata_Map);
+    Serial.println(" , ");
   
  
 
