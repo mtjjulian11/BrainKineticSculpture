@@ -260,46 +260,46 @@ if (brain.update()) {
     Serial.print(Ddata_Map);
     Serial.print(" , ");
     Serial.print(counterD);
-     Serial.print(" , ");
+    Serial.print(" , ");
     Serial.print(THdata_Map);
     Serial.print(" , ");
-     Serial.print(counterTH);
+    Serial.print(counterTH);
     Serial.print(" , ");
     Serial.print(LAdata_Map);
     Serial.print(" , ");
-      Serial.print(counterLA);
+    Serial.print(counterLA);
     Serial.print(" , ");
     Serial.print(HAdata_Map);
     Serial.print(" , ");
-      Serial.print(counterHA);
+    Serial.print(counterHA);
     Serial.print(" , ");
     Serial.print(LBdata_Map);
     Serial.print(" , ");
-      Serial.print(counterLB);
+    Serial.print(counterLB);
     Serial.print(" , ");
     Serial.print(HBdata_Map);
     Serial.print(" , ");
-      Serial.print(counterHB);
+    Serial.print(counterHB);
     Serial.print(" , ");
     Serial.print(LGdata_Map);
     Serial.print(" , ");
-    Serial.println(MGdata_Map);
-      Serial.print(counterLG);
+    Serial.print(MGdata_Map);
+    Serial.print(counterLG);
     Serial.print(" , ");
     Serial.print(MGdata_Map);
     Serial.print(" , ");
-      Serial.println(counterMG);
+    Serial.println(counterMG);
 
 
 
- Ddata_New = Ddata[Ddata_idx];
- THdata_New = THdata[THdata_idx]; 
- LAdata_New = LAdata[LAdata_idx];
- HAdata_New = HAdata[HAdata_idx];
- LBdata_New = LBdata[LBdata_idx];
- HBdata_New = HBdata[HBdata_idx];
- LGdata_New = LGdata[LGdata_idx];
- MGdata_New = MGdata[MGdata_idx];
+  Ddata_New = Ddata_Map;
+ THdata_New = THdata_Map; 
+ LAdata_New = LAdata_Map;
+ HAdata_New = HAdata_Map ;
+ LBdata_New = LBdata_Map;
+ HBdata_New = HBdata_Map;
+ LGdata_New = LGdata_Map ;
+ MGdata_New = MGdata_Map;
 
   }  
   
