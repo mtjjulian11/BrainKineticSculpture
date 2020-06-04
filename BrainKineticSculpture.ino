@@ -231,30 +231,29 @@ if (brain.update()) {
 
 
 
-  if(Ddata[Ddata_idx]< Ddata[Ddata_idx-1]) counterD = 1;
- else if (Ddata[Ddata_idx]< Ddata[Ddata_idx-1]) counterD = 2;
+  if(Ddata_Map< Ddata_New) counterD = 1;
+ else if (Ddata_Map> Ddata_New) counterD = 2;
 
-  if(THdata[THdata_idx]< THdata[THdata_idx-1]) counterTH = 1;
- else if (THdata[THdata_idx]> THdata[THdata_idx-1]) counterTH = 2;
+  if(THdata_Map< THdata_New) counterTH = 1;
+ else if (THdata_Map> THdata_New) counterTH = 2;
+ 
+  if(LAdata_Map< LAdata_New) counterLA = 1;
+ else if (LAdata_Map> LAdata_New) counterLA = 2;
+ 
+  if(HAdata_Map< HAdata_New) counterHA = 1;
+ else if (HAdata_Map> HAdata_New) counterHA = 2;
 
-  if(LAdata[LAdata_idx]< LAdata[LAdata_idx-1]) counterLA = 1;
- else if (LAdata[LAdata_idx]> LAdata[LAdata_idx-1]) counterLA = 2;
+  if(LBdata_Map< LBdata_New) counterLB = 1;
+ else if (LBdata_Map> LBdata_New) counterLB = 2;
 
-  if(HAdata[HAdata_idx]< HAdata[HAdata_idx-1]) counterHA = 1;
- else if (HAdata[HAdata_idx]> HAdata[HAdata_idx-1]) counterHA = 2;
+  if(HBdata_Map< HBdata_New) counterHB = 1;
+ else if (HBdata_Map> HBdata_New) counterHB = 2;
 
-  if(LBdata[LBdata_idx]< LBdata[LBdata_idx-1]) counterLB = 1;
- else if (LBdata[LBdata_idx]> LBdata[LBdata_idx-1]) counterLB = 2;
-
-  if(HBdata[HBdata_idx]< HBdata[HBdata_idx-1]) counterHB = 1;
- else if (HBdata[HBdata_idx]> HBdata[HBdata_idx-1]) counterHB = 2;
-
-  if(LGdata[LGdata_idx]< LGdata[LGdata_idx-1]) counterLG = 1;
- else if (LGdata[LGdata_idx]> LGdata[LGdata_idx-1]) counterLG = 2;
-
-  if(MGdata[MGdata_idx]< MGdata[MGdata_idx-1]) counterMG = 1;
- else if (MGdata[MGdata_idx]> MGdata[MGdata_idx-1]) counterMG = 2;
-
+  if(LGdata_Map< LGdata_New) counterLG = 1;
+ else if (LGdata_Map> LGdata_New) counterLG = 2;
+ 
+  if(MGdata_Map< MGdata_New) counterMG = 1;
+ else if (MGdata_Map> MGdata_New) counterMG = 2;
 
 
 
