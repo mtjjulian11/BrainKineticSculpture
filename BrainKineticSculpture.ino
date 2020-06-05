@@ -283,7 +283,6 @@ if (brain.update()) {
     Serial.print(" , ");
     Serial.print(LGdata_Map);
     Serial.print(" , ");
-    Serial.print(MGdata_Map);
     Serial.print(counterLG);
     Serial.print(" , ");
     Serial.print(MGdata_Map);
