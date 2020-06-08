@@ -15,7 +15,6 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 // ------------------------ Variables ----------------------
 
 
-
 //Holds Delta signal value (sum)
 unsigned long Ddata[NUM_READINGS];
 unsigned long THdata[NUM_READINGS];
@@ -43,6 +42,46 @@ unsigned long LBdata_avg;
 unsigned long HBdata_avg;
 unsigned long LGdata_avg;
 unsigned long MGdata_avg;
+
+
+unsigned long Ddata_prom;
+unsigned long THdata_prom;
+unsigned long LAdata_prom;
+unsigned long HAdata_prom;
+unsigned long LBdata_prom;
+unsigned long HBdata_prom;
+unsigned long LGdata_prom;
+unsigned long MGdata_prom;
+
+unsigned long Ddata_Map;
+unsigned long THdata_Map;
+unsigned long LAdata_Map;
+unsigned long HAdata_Map;
+unsigned long LBdata_Map;
+unsigned long HBdata_Map;
+unsigned long LGdata_Map;
+unsigned long MGdata_Map;
+
+
+unsigned long Ddata_New;
+unsigned long THdata_New;
+unsigned long LAdata_New;
+unsigned long HAdata_New;
+unsigned long LBdata_New;
+unsigned long HBdata_New;
+unsigned long LGdata_New;
+unsigned long MGdata_New;
+
+int counterD;
+int counterTH;
+int counterLA;
+int counterHA;
+int counterLB;
+int counterHB;
+int counterLG;
+int counterMG;
+
+
 
 
 
@@ -96,9 +135,9 @@ void setup() {
   
 void loop() {
 
-  if (brain.update()) {
-  
-  
+
+if (brain.update()) {
+
   Ddata_idx = 0;
   THdata_idx = 0;
   LAdata_idx = 0;
@@ -108,8 +147,7 @@ void loop() {
   LGdata_idx = 0;
   MGdata_idx = 0;
 
-    
-    if (Ddata_idx == NUM_READINGS ) {
+   if (Ddata_idx == NUM_READINGS ) {
        Ddata_idx = 0;
       }
     if( THdata_idx == NUM_READINGS){
@@ -133,8 +171,7 @@ void loop() {
     if(MGdata_idx == NUM_READINGS){
       MGdata_idx = 0;
     }
-
-         
+    
     Ddata[Ddata_idx] = brain.readDelta();
     Ddata_idx++;
     
@@ -159,6 +196,8 @@ void loop() {
     MGdata[MGdata_idx] = brain.readMidGamma();
     MGdata_idx++;
 
+ 
+
     
     //calculamos el promedio de las medias móviles
     Ddata_avg = 0;
@@ -181,8 +220,69 @@ void loop() {
       LGdata_avg +=  LGdata[i];
       MGdata_avg +=  MGdata[i];
     }
+           
 
-    if((Ddata_avg / NUM_READINGS)> 700000) {
+
+ Ddata_prom = Ddata_avg / NUM_READINGS;
+ THdata_prom = THdata_avg / NUM_READINGS;
+ LAdata_prom = LAdata_avg / NUM_READINGS;
+ HAdata_prom = HAdata_avg / NUM_READINGS;
+ LBdata_prom = LBdata_avg / NUM_READINGS;
+ HBdata_prom = HBdata_avg / NUM_READINGS;
+ LGdata_prom = LGdata_avg / NUM_READINGS;
+ MGdata_prom = MGdata_avg / NUM_READINGS;
+
+ Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10,1000);
+ THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LAdata_Map= map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ HAdata_Map= map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LBdata_Map= map(LBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ HBdata_Map= map(HBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ LGdata_Map= map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+ MGdata_Map= map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
+
+
+Counter();
+ 
+
+
+
+    Serial.print(Ddata_Map);
+    Serial.print(" , ");
+    Serial.print(counterD);
+    Serial.print(" , ");
+    Serial.print(THdata_Map);
+    Serial.print(" , ");
+    Serial.print(counterTH);
+    Serial.print(" , ");
+    Serial.print(LAdata_Map);
+    Serial.print(" , ");
+    Serial.print(counterLA);
+    Serial.print(" , ");
+    Serial.print(HAdata_Map);
+    Serial.print(" , ");
+    Serial.print(counterHA);
+    Serial.print(" , ");
+    Serial.print(LBdata_Map);
+    Serial.print(" , ");
+    Serial.print(counterLB);
+    Serial.print(" , ");
+    Serial.print(HBdata_Map);
+    Serial.print(" , ");
+    Serial.print(counterHB);
+    Serial.print(" , ");
+    Serial.print(LGdata_Map);
+    Serial.print(" , ");
+    Serial.print(counterLG);
+    Serial.print(" , ");
+    Serial.print(MGdata_Map);
+    Serial.print(" , ");
+    Serial.println(counterMG);
+
+
+
+
+   if(Ddata_Map > 600) {
 
         for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
 
@@ -190,28 +290,62 @@ void loop() {
     // Here we're using a moderately bright green color:
     pixels.setPixelColor(i, pixels.Color(0, 150, 0));
 
-    delay(500); // Pause before next pass through loop
-  }
-      
-    }
-   
-    Serial.print(constrain((Ddata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.print(constrain((THdata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.print(constrain((LAdata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.print(constrain((HAdata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.print(constrain((LBdata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.print(constrain((HBdata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.print(constrain((LGdata_avg / NUM_READINGS), 500, 999999));
-    Serial.print(" , ");
-    Serial.println(constrain((MGdata_avg / NUM_READINGS), 500, 999999));
-    
-     }
+    delay(200); // Pause before next pass through loop
+}
+       for(int i = NUMPIXELS ; i>0 ; i--) { // For each pixel...
 
+    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
+    // Here we're using a moderately bright green color:
+    pixels.setPixelColor(i, pixels.Color(random(0,255), random(0,255), random(0,255)));
+
+    delay(200); // Pause before next pass through loop
+   }
+
+
+  Ddata_New = Ddata_Map;
+ THdata_New = THdata_Map; 
+ LAdata_New = LAdata_Map;
+ HAdata_New = HAdata_Map ;
+ LBdata_New = LBdata_Map;
+ HBdata_New = HBdata_Map;
+ LGdata_New = LGdata_Map ;
+ MGdata_New = MGdata_Map;
+
+   
+  
+
+
+
+   }
 
 }
+
+}
+
+int Counter(){
+  if(Ddata_Map< Ddata_New) counterD = 1;
+ else if (Ddata_Map> Ddata_New) counterD = 2;
+
+ if(THdata_Map< THdata_New) counterTH = 1;
+ else if (THdata_Map> THdata_New) counterTH = 2;
+ 
+  if(LAdata_Map< LAdata_New) counterLA = 1;
+ else if (LAdata_Map> LAdata_New) counterLA = 2;
+ 
+  if(HAdata_Map< HAdata_New) counterHA = 1;
+ else if (HAdata_Map> HAdata_New) counterHA = 2;
+
+  if(LBdata_Map< LBdata_New) counterLB = 1;
+ else if (LBdata_Map> LBdata_New) counterLB = 2;
+
+  if(HBdata_Map< HBdata_New) counterHB = 1;
+ else if (HBdata_Map> HBdata_New) counterHB = 2;
+
+  if(LGdata_Map< LGdata_New) counterLG = 1;
+ else if (LGdata_Map> LGdata_New) counterLG = 2;
+ 
+  if(MGdata_Map< MGdata_New) counterMG = 1;
+ else if (MGdata_Map> MGdata_New) counterMG = 2;
+  
+  
+  }
