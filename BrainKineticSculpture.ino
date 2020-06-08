@@ -230,30 +230,8 @@ if (brain.update()) {
  MGdata_Map= map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
 
 
-
-  if(Ddata_Map< Ddata_New) counterD = 1;
- else if (Ddata_Map> Ddata_New) counterD = 2;
-
-  if(THdata_Map< THdata_New) counterTH = 1;
- else if (THdata_Map> THdata_New) counterTH = 2;
+Counter();
  
-  if(LAdata_Map< LAdata_New) counterLA = 1;
- else if (LAdata_Map> LAdata_New) counterLA = 2;
- 
-  if(HAdata_Map< HAdata_New) counterHA = 1;
- else if (HAdata_Map> HAdata_New) counterHA = 2;
-
-  if(LBdata_Map< LBdata_New) counterLB = 1;
- else if (LBdata_Map> LBdata_New) counterLB = 2;
-
-  if(HBdata_Map< HBdata_New) counterHB = 1;
- else if (HBdata_Map> HBdata_New) counterHB = 2;
-
-  if(LGdata_Map< LGdata_New) counterLG = 1;
- else if (LGdata_Map> LGdata_New) counterLG = 2;
- 
-  if(MGdata_Map< MGdata_New) counterMG = 1;
- else if (MGdata_Map> MGdata_New) counterMG = 2;
 
 
 
@@ -304,3 +282,32 @@ if (brain.update()) {
   
 
 }
+
+
+int Counter(){
+  if(Ddata_Map< Ddata_New) counterD = 1;
+ else if (Ddata_Map> Ddata_New) counterD = 2;
+
+ if(THdata_Map< THdata_New) counterTH = 1;
+ else if (THdata_Map> THdata_New) counterTH = 2;
+ 
+  if(LAdata_Map< LAdata_New) counterLA = 1;
+ else if (LAdata_Map> LAdata_New) counterLA = 2;
+ 
+  if(HAdata_Map< HAdata_New) counterHA = 1;
+ else if (HAdata_Map> HAdata_New) counterHA = 2;
+
+  if(LBdata_Map< LBdata_New) counterLB = 1;
+ else if (LBdata_Map> LBdata_New) counterLB = 2;
+
+  if(HBdata_Map< HBdata_New) counterHB = 1;
+ else if (HBdata_Map> HBdata_New) counterHB = 2;
+
+  if(LGdata_Map< LGdata_New) counterLG = 1;
+ else if (LGdata_Map> LGdata_New) counterLG = 2;
+ 
+  if(MGdata_Map< MGdata_New) counterMG = 1;
+ else if (MGdata_Map> MGdata_New) counterMG = 2;
+  
+  
+  }
