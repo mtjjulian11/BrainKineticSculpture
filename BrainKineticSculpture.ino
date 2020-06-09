@@ -244,7 +244,7 @@ if (brain.update()) {
 
 Counter();
  
-
+comparison1();
 
 
     Serial.print(Ddata_Map);
@@ -281,28 +281,7 @@ Counter();
 
 
 
-
-   if(Ddata_Map > 600) {
-
-        for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
-
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    pixels.setPixelColor(i, pixels.Color(0, 150, 0));
-
-    delay(200); // Pause before next pass through loop
-}
-       for(int i = NUMPIXELS ; i>0 ; i--) { // For each pixel...
-
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    pixels.setPixelColor(i, pixels.Color(random(0,255), random(0,255), random(0,255)));
-
-    delay(200); // Pause before next pass through loop
-   }
-
-
-  Ddata_New = Ddata_Map;
+ Ddata_New = Ddata_Map;
  THdata_New = THdata_Map; 
  LAdata_New = LAdata_Map;
  HAdata_New = HAdata_Map ;
@@ -349,3 +328,27 @@ int Counter(){
   
   
   }
+
+int comparison1(){
+
+  if(counterD = 1 && (counterTH = 1 ) && (counterLG = 1){
+   
+       for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+
+    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
+    // Here we're using a moderately bright green color:
+    pixels.setPixelColor(i, pixels.Color(0, 150, 0)); 
+
+    delay(200); // Pause before next pass through loop
+}
+       for(int i = NUMPIXELS ; i>0 ; i--) { // For each pixel...
+
+    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
+    // Here we're using a moderately bright green color:
+    pixels.setPixelColor(i, pixels.Color(random(0,255), random(0,255), random(0,255)));
+
+    delay(200); // Pause before next pass through loop
+       }
+
+  }
+}
