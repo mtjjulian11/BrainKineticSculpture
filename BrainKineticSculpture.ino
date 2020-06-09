@@ -299,7 +299,7 @@ comparison1();
 
 }
 
-}
+
 
 int Counter(){
   if(Ddata_Map< Ddata_New) counterD = 1;
@@ -331,7 +331,7 @@ int Counter(){
 
 int comparison1(){
 
-  if(counterD = 1 && (counterTH = 1 ) && (counterLG = 1){
+  if((counterD = 1) && (counterTH = 1 ) && (counterLG = 1)){
    
        for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
 
