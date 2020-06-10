@@ -3,6 +3,22 @@
 #define CONSTRAIN_LOW 10000
 #define NUM_READINGS 5
 
+
+#include <Arduino.h>
+#include <PCA9685.h>
+
+#define I2C_ADDR_C1 0x40
+#define I2C_ADDR_C2 0x41
+#define OUTPUT_ENABLE_PIN 2
+
+#define SERVO_PULSE_DURATION_MIN 1000
+#define SERVO_PULSE_DURATION_MAX 2000
+
+PCA9685 controller1;
+PCA9685 controller2;
+
+
+
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
 //-----------------------  Objects ------------------------
@@ -81,6 +97,20 @@ void setup() {
   // Start the hardware serial.
   Serial.begin(9600);
 
+  // SERVOS
+  
+  controller1.setupSingleDevice(Wire, I2C_ADDR_C1);
+  controller1.setupOutputEnablePin(OUTPUT_ENABLE_PIN);
+  controller1.enableOutputs(OUTPUT_ENABLE_PIN);
+  controller1.setToServoFrequency();
+  
+  controller2.setupSingleDevice(Wire, I2C_ADDR_C2);
+  controller2.setupOutputEnablePin(OUTPUT_ENABLE_PIN);
+  controller2.enableOutputs(OUTPUT_ENABLE_PIN);
+  controller2.setToServoFrequency();  
+
+
+  
   //Obtenemos los 5 primeros valores
   for (int i = 0; i < NUM_READINGS; i++) {
     while (!brain.update()) {}
@@ -232,9 +262,21 @@ if (brain.update()) {
 
 Counter();
  
+  int servo_pulse;
+  int servo_angle= 90;
+  int counter_servo;
+  
+  
+  if(brain.readDelta()>900000){
+  
+  
+  for( servo_angle= 0; servo_angle < 180; servo_angle++){
+  servo_pulse = map (servo_angle, 0, 180, SERVO_PULSE_DURATION_MIN, SERVO_PULSE_DURATION_MAX);
+  counter_servo++;
+  controller1.setChannelServoPulseDuration(counter_servo,servo_pulse);
+}
 
-
-
+  }
     Serial.print(Ddata_Map);
     Serial.print(" , ");
     Serial.print(counterD);
