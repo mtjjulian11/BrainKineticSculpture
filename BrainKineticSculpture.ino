@@ -5,6 +5,7 @@
 
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
+#include "ArduinoLinq.hpp"
 //-----------------------  Objects ------------------------
 Brain brain(Serial);
 // ------------------------ Variables ----------------------
@@ -65,6 +66,34 @@ unsigned long LBdata_New;
 unsigned long HBdata_New;
 unsigned long LGdata_New;
 unsigned long MGdata_New;
+
+unsigned long New_Ddata_prom;
+unsigned long New_THdata_prom;
+unsigned long New_LAdata_prom;
+unsigned long New_HAdata_prom;
+unsigned long New_LBdata_prom;
+unsigned long New_HBdata_prom;
+unsigned long New_LGdata_prom;
+unsigned long New_MGdata_prom;
+
+unsigned long Ddata_Min;
+unsigned long THdata_Min;
+unsigned long LAdata_Min;
+unsigned long HAdata_Min;
+unsigned long LBdata_Min;
+unsigned long HBdata_Min;
+unsigned long LGdata_Min;
+unsigned long MGdata_Min;
+
+
+unsigned long Ddata_Max;
+unsigned long THdata_Max;
+unsigned long LAdata_Max;
+unsigned long HAdata_Max;
+unsigned long LBdata_Max;
+unsigned long HBdata_Max;
+unsigned long LGdata_Max;
+unsigned long MGdata_Max;
 
 int counterD;
 int counterTH;
@@ -208,8 +237,9 @@ if (brain.update()) {
       LGdata_avg +=  LGdata[i];
       MGdata_avg +=  MGdata[i];
     }
-           
 
+
+DdataMinMax();
 
  Ddata_prom = Ddata_avg / NUM_READINGS;
  THdata_prom = THdata_avg / NUM_READINGS;
@@ -220,7 +250,7 @@ if (brain.update()) {
  LGdata_prom = LGdata_avg / NUM_READINGS;
  MGdata_prom = MGdata_avg / NUM_READINGS;
 
- Ddata_Map = map(Ddata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10,1000);
+ Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 250,500);
  THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
  LAdata_Map= map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
  HAdata_Map= map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
@@ -233,39 +263,43 @@ if (brain.update()) {
 Counter();
  
 
-
-
     Serial.print(Ddata_Map);
     Serial.print(" , ");
-    Serial.print(counterD);
+    Serial.print(Ddata_Min);
     Serial.print(" , ");
-    Serial.print(THdata_Map);
-    Serial.print(" , ");
-    Serial.print(counterTH);
-    Serial.print(" , ");
-    Serial.print(LAdata_Map);
-    Serial.print(" , ");
-    Serial.print(counterLA);
-    Serial.print(" , ");
-    Serial.print(HAdata_Map);
-    Serial.print(" , ");
-    Serial.print(counterHA);
-    Serial.print(" , ");
-    Serial.print(LBdata_Map);
-    Serial.print(" , ");
-    Serial.print(counterLB);
-    Serial.print(" , ");
-    Serial.print(HBdata_Map);
-    Serial.print(" , ");
-    Serial.print(counterHB);
-    Serial.print(" , ");
-    Serial.print(LGdata_Map);
-    Serial.print(" , ");
-    Serial.print(counterLG);
-    Serial.print(" , ");
-    Serial.print(MGdata_Map);
-    Serial.print(" , ");
-    Serial.println(counterMG);
+    Serial.println(THdata_Max);
+
+//    Serial.print(Ddata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterD);
+//    Serial.print(" , ");
+//    Serial.print(THdata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterTH);
+//    Serial.print(" , ");
+//    Serial.print(LAdata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterLA);
+//    Serial.print(" , ");
+//    Serial.print(HAdata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterHA);
+//    Serial.print(" , ");
+//    Serial.print(LBdata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterLB);
+//    Serial.print(" , ");
+//    Serial.print(HBdata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterHB);
+//    Serial.print(" , ");
+//    Serial.print(LGdata_Map);
+//    Serial.print(" , ");
+//    Serial.print(counterLG);
+//    Serial.print(" , ");
+//    Serial.print(MGdata_Map);
+//    Serial.print(" , ");
+//    Serial.println(counterMG);
 
 
 
@@ -278,6 +312,18 @@ Counter();
  LGdata_New = LGdata_Map ;
  MGdata_New = MGdata_Map;
 
+
+
+New_Ddata_prom = Ddata_prom;
+New_THdata_prom = THdata_prom;
+New_LAdata_prom = LAdata_prom;
+New_HAdata_prom = HAdata_prom;
+New_LBdata_prom = LBdata_prom;
+New_HBdata_prom = HBdata_prom;
+New_LGdata_prom = LGdata_prom;
+New_MGdata_prom = MGdata_prom;
+
+ 
   }  
   
 
@@ -308,6 +354,11 @@ int Counter(){
  
   if(MGdata_Map< MGdata_New) counterMG = 1;
  else if (MGdata_Map> MGdata_New) counterMG = 2;
-  
-  
-  }
+      }
+
+unsigned long DdataMinMax(){
+ Ddata_Min = from_array(Ddata[Ddata_idx])
+     >>min();
+ Ddata_Max = from_array(Ddata[Ddata_idx])
+     >>max();
+}
