@@ -267,13 +267,17 @@ Counter();
   int counter_servo;
   
   
-  if(brain.readDelta()>900000){
+  if(brain.readAttention()>10){
   
   
   for( servo_angle= 0; servo_angle < 180; servo_angle++){
+
+    if(counter_servo = 4)counter_servo= 0;
+        
   servo_pulse = map (servo_angle, 0, 180, SERVO_PULSE_DURATION_MIN, SERVO_PULSE_DURATION_MAX);
   counter_servo++;
   controller1.setChannelServoPulseDuration(counter_servo,servo_pulse);
+  delay(100);
 }
 
   }
