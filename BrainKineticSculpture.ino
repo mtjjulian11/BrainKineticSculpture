@@ -1,11 +1,11 @@
 
 #define CONSTRAIN_HIGH 1000000
 #define CONSTRAIN_LOW 10000
-#define NUM_READINGS 5
+#define NUM_READINGS 10
 
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
-#include "ArduinoLinq.hpp"
+
 //-----------------------  Objects ------------------------
 Brain brain(Serial);
 // ------------------------ Variables ----------------------
@@ -67,33 +67,33 @@ unsigned long HBdata_New;
 unsigned long LGdata_New;
 unsigned long MGdata_New;
 
-unsigned long New_Ddata_prom;
-unsigned long New_THdata_prom;
-unsigned long New_LAdata_prom;
-unsigned long New_HAdata_prom;
-unsigned long New_LBdata_prom;
-unsigned long New_HBdata_prom;
-unsigned long New_LGdata_prom;
-unsigned long New_MGdata_prom;
+unsigned long New_Ddata_prom[NUM_READINGS];
+unsigned long New_THdata_prom[NUM_READINGS];
+unsigned long New_LAdata_prom[NUM_READINGS];
+unsigned long New_HAdata_prom[NUM_READINGS];
+unsigned long New_LBdata_prom[NUM_READINGS];
+unsigned long New_HBdata_prom[NUM_READINGS];
+unsigned long New_LGdata_prom[NUM_READINGS];
+unsigned long New_MGdata_prom[NUM_READINGS];
 
-unsigned long Ddata_Min;
-unsigned long THdata_Min;
-unsigned long LAdata_Min;
-unsigned long HAdata_Min;
-unsigned long LBdata_Min;
-unsigned long HBdata_Min;
-unsigned long LGdata_Min;
-unsigned long MGdata_Min;
+unsigned long Ddata_Min = CONSTRAIN_HIGH;
+unsigned long THdata_Min = CONSTRAIN_HIGH;
+unsigned long LAdata_Min = CONSTRAIN_HIGH;
+unsigned long HAdata_Min = CONSTRAIN_HIGH;
+unsigned long LBdata_Min = CONSTRAIN_HIGH;
+unsigned long HBdata_Min = CONSTRAIN_HIGH;
+unsigned long LGdata_Min = CONSTRAIN_HIGH;
+unsigned long MGdata_Min = CONSTRAIN_HIGH;
 
 
-unsigned long Ddata_Max;
-unsigned long THdata_Max;
-unsigned long LAdata_Max;
-unsigned long HAdata_Max;
-unsigned long LBdata_Max;
-unsigned long HBdata_Max;
-unsigned long LGdata_Max;
-unsigned long MGdata_Max;
+unsigned long Ddata_Max = CONSTRAIN_LOW;
+unsigned long THdata_Max = CONSTRAIN_LOW;
+unsigned long LAdata_Max = CONSTRAIN_LOW;
+unsigned long HAdata_Max = CONSTRAIN_LOW;
+unsigned long LBdata_Max = CONSTRAIN_LOW;
+unsigned long HBdata_Max = CONSTRAIN_LOW;
+unsigned long LGdata_Max = CONSTRAIN_LOW;
+unsigned long MGdata_Max = CONSTRAIN_LOW;
 
 int counterD;
 int counterTH;
@@ -104,7 +104,7 @@ int counterHB;
 int counterLG;
 int counterMG;
 
-
+int minimum = 0;
 
 void setup() {
   // Start the hardware serial.
@@ -123,7 +123,7 @@ void setup() {
     LGdata[i] = brain.readLowGamma();
     MGdata[i] = brain.readMidGamma();
 
-    
+
     Ddata_avg = Ddata_avg + Ddata[i];
     THdata_avg = THdata_avg + THdata[i];
     LAdata_avg = LAdata_avg + LAdata[i];
@@ -132,9 +132,9 @@ void setup() {
     HBdata_avg = HBdata_avg + HBdata[i];
     LGdata_avg = LGdata_avg + LGdata[i];
     MGdata_avg = MGdata_avg + MGdata[i];
-    
+
   }
-  
+
   Ddata_idx = NUM_READINGS;
   THdata_idx = NUM_READINGS;
   LAdata_idx = NUM_READINGS;
@@ -143,79 +143,78 @@ void setup() {
   HBdata_idx = NUM_READINGS;
   LGdata_idx = NUM_READINGS;
   MGdata_idx = NUM_READINGS;
-  
+
 }
 
 
 //------------------------------------- LOOP ------------------------------------------
 
-
 void loop() {
 
 
-if (brain.update()) {
 
-  Ddata_idx = 0;
-  THdata_idx = 0;
-  LAdata_idx = 0;
-  HAdata_idx = 0;
-  LBdata_idx = 0;
-  HBdata_idx = 0;
-  LGdata_idx = 0;
-  MGdata_idx = 0;
+  if (brain.update()) {
 
-   if (Ddata_idx == NUM_READINGS ) {
-       Ddata_idx = 0;
-      }
-    if( THdata_idx == NUM_READINGS){
-       THdata_idx = 0;
-       }
-    if(LAdata_idx == NUM_READINGS){
-       LAdata_idx=0;
-      } 
-    if (HAdata_idx == NUM_READINGS){
-       HAdata_idx = 0;
-      }
-    if(LBdata == NUM_READINGS){
-      LBdata_idx=0;
-      }
-    if(HBdata_idx == NUM_READINGS){
-      HBdata_idx =0;
-      }
-    if(LGdata_idx == NUM_READINGS){
+    Ddata_idx = 0;
+    THdata_idx = 0;
+    LAdata_idx = 0;
+    HAdata_idx = 0;
+    LBdata_idx = 0;
+    HBdata_idx = 0;
+    LGdata_idx = 0;
+    MGdata_idx = 0;
+
+    if (Ddata_idx == NUM_READINGS ) {
+      Ddata_idx = 0;
+    }
+    if ( THdata_idx == NUM_READINGS) {
+      THdata_idx = 0;
+    }
+    if (LAdata_idx == NUM_READINGS) {
+      LAdata_idx = 0;
+    }
+    if (HAdata_idx == NUM_READINGS) {
+      HAdata_idx = 0;
+    }
+    if (LBdata == NUM_READINGS) {
+      LBdata_idx = 0;
+    }
+    if (HBdata_idx == NUM_READINGS) {
+      HBdata_idx = 0;
+    }
+    if (LGdata_idx == NUM_READINGS) {
       LGdata_idx = 0;
-      }
-    if(MGdata_idx == NUM_READINGS){
+    }
+    if (MGdata_idx == NUM_READINGS) {
       MGdata_idx = 0;
     }
-    
+
     Ddata[Ddata_idx] = brain.readDelta();
-    Ddata_idx++;
-    
     THdata[THdata_idx] = brain.readTheta();
-    THdata_idx++;
-    
     LAdata[LAdata_idx] = brain.readLowAlpha();
-    LAdata_idx++;
-
     HAdata[HAdata_idx] = brain.readHighAlpha();
-    HAdata_idx++;
-
     LBdata[LBdata_idx] = brain.readLowBeta();
-    LBdata_idx++;
-
     HBdata[HBdata_idx] = brain.readHighBeta();
-    HBdata_idx++;
-
     LGdata[LGdata_idx] = brain.readLowGamma();
-    LGdata_idx++;
-
     MGdata[MGdata_idx] = brain.readMidGamma();
+
+
+    //Actualizamos mínimo y máximo de Delta y constreñimos
+    if (Ddata[Ddata_idx] < Ddata_Min) Ddata_Min = Ddata[Ddata_idx];
+    if (Ddata[Ddata_idx] > Ddata_Max) Ddata_Max = Ddata[Ddata_idx];
+    Ddata_Min = constrain (Ddata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    Ddata_Max = constrain (Ddata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+
+
+    Ddata_idx++;
+    THdata_idx++;
+    LAdata_idx++;
+    HAdata_idx++;
+    LBdata_idx++;
+    HBdata_idx++;
+    LGdata_idx++;
     MGdata_idx++;
 
- 
-
-    
     //calculamos el promedio de las medias móviles
     Ddata_avg = 0;
     THdata_avg = 0;
@@ -225,8 +224,8 @@ if (brain.update()) {
     HBdata_avg = 0;
     LGdata_avg = 0;
     MGdata_avg = 0;
-    
-  
+
+
     for (int i = 0; i < NUM_READINGS; i++) {
       Ddata_avg += Ddata[i];
       THdata_avg +=  THdata[i];
@@ -239,126 +238,123 @@ if (brain.update()) {
     }
 
 
-DdataMinMax();
-
- Ddata_prom = Ddata_avg / NUM_READINGS;
- THdata_prom = THdata_avg / NUM_READINGS;
- LAdata_prom = LAdata_avg / NUM_READINGS;
- HAdata_prom = HAdata_avg / NUM_READINGS;
- LBdata_prom = LBdata_avg / NUM_READINGS;
- HBdata_prom = HBdata_avg / NUM_READINGS;
- LGdata_prom = LGdata_avg / NUM_READINGS;
- MGdata_prom = MGdata_avg / NUM_READINGS;
-
- Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 250,500);
- THdata_Map= map(THdata_prom,CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
- LAdata_Map= map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
- HAdata_Map= map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
- LBdata_Map= map(LBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
- HBdata_Map= map(HBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
- LGdata_Map= map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
- MGdata_Map= map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH,10,1000);
 
 
-Counter();
- 
+    Ddata_prom = Ddata_avg / NUM_READINGS;
+    THdata_prom = THdata_avg / NUM_READINGS;
+    LAdata_prom = LAdata_avg / NUM_READINGS;
+    HAdata_prom = HAdata_avg / NUM_READINGS;
+    LBdata_prom = LBdata_avg / NUM_READINGS;
+    HBdata_prom = HBdata_avg / NUM_READINGS;
+    LGdata_prom = LGdata_avg / NUM_READINGS;
+    MGdata_prom = MGdata_avg / NUM_READINGS;
+
+
+
+    Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 10, 180);
+    THdata_Map = map(THdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    LAdata_Map = map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    HAdata_Map = map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    LBdata_Map = map(LBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    HBdata_Map = map(HBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    LGdata_Map = map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    MGdata_Map = map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+
+
+
+    Counter();
+
 
     Serial.print(Ddata_Map);
     Serial.print(" , ");
     Serial.print(Ddata_Min);
     Serial.print(" , ");
-    Serial.println(THdata_Max);
+    Serial.println(Ddata_Max);
 
-//    Serial.print(Ddata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterD);
-//    Serial.print(" , ");
-//    Serial.print(THdata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterTH);
-//    Serial.print(" , ");
-//    Serial.print(LAdata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterLA);
-//    Serial.print(" , ");
-//    Serial.print(HAdata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterHA);
-//    Serial.print(" , ");
-//    Serial.print(LBdata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterLB);
-//    Serial.print(" , ");
-//    Serial.print(HBdata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterHB);
-//    Serial.print(" , ");
-//    Serial.print(LGdata_Map);
-//    Serial.print(" , ");
-//    Serial.print(counterLG);
-//    Serial.print(" , ");
-//    Serial.print(MGdata_Map);
-//    Serial.print(" , ");
-//    Serial.println(counterMG);
-
-
-
-  Ddata_New = Ddata_Map;
- THdata_New = THdata_Map; 
- LAdata_New = LAdata_Map;
- HAdata_New = HAdata_Map ;
- LBdata_New = LBdata_Map;
- HBdata_New = HBdata_Map;
- LGdata_New = LGdata_Map ;
- MGdata_New = MGdata_Map;
+    //    Serial.print(Ddata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterD);
+    //    Serial.print(" , ");
+    //    Serial.print(THdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterTH);
+    //    Serial.print(" , ");
+    //    Serial.print(LAdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterLA);
+    //    Serial.print(" , ");
+    //    Serial.print(HAdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterHA);
+    //    Serial.print(" , ");
+    //    Serial.print(LBdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterLB);
+    //    Serial.print(" , ");
+    //    Serial.print(HBdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterHB);
+    //    Serial.print(" , ");
+    //    Serial.print(LGdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.print(counterLG);
+    //    Serial.print(" , ");
+    //    Serial.print(MGdata_Map);
+    //    Serial.print(" , ");
+    //    Serial.println(counterMG);
 
 
 
-New_Ddata_prom = Ddata_prom;
-New_THdata_prom = THdata_prom;
-New_LAdata_prom = LAdata_prom;
-New_HAdata_prom = HAdata_prom;
-New_LBdata_prom = LBdata_prom;
-New_HBdata_prom = HBdata_prom;
-New_LGdata_prom = LGdata_prom;
-New_MGdata_prom = MGdata_prom;
+    Ddata_New = Ddata_Map;
+    THdata_New = THdata_Map;
+    LAdata_New = LAdata_Map;
+    HAdata_New = HAdata_Map ;
+    LBdata_New = LBdata_Map;
+    HBdata_New = HBdata_Map;
+    LGdata_New = LGdata_Map ;
+    MGdata_New = MGdata_Map;
 
- 
-  }  
-  
+
+    //
+    //New_Ddata_prom = Ddata_prom;
+    //New_THdata_prom = THdata_prom;
+    //New_LAdata_prom = LAdata_prom;
+    //New_HAdata_prom = HAdata_prom;
+    //New_LBdata_prom = LBdata_prom;
+    //New_HBdata_prom = HBdata_prom;
+    //New_LGdata_prom = LGdata_prom;
+    //New_MGdata_prom = MGdata_prom;
+
+
+  }
+
 
 }
 
 
-int Counter(){
-  if(Ddata_Map< Ddata_New) counterD = 1;
- else if (Ddata_Map> Ddata_New) counterD = 2;
 
- if(THdata_Map< THdata_New) counterTH = 1;
- else if (THdata_Map> THdata_New) counterTH = 2;
- 
-  if(LAdata_Map< LAdata_New) counterLA = 1;
- else if (LAdata_Map> LAdata_New) counterLA = 2;
- 
-  if(HAdata_Map< HAdata_New) counterHA = 1;
- else if (HAdata_Map> HAdata_New) counterHA = 2;
+int Counter() {
+  if (Ddata_Map < Ddata_New) counterD = 1;
+  else if (Ddata_Map > Ddata_New) counterD = 2;
 
-  if(LBdata_Map< LBdata_New) counterLB = 1;
- else if (LBdata_Map> LBdata_New) counterLB = 2;
+  if (THdata_Map < THdata_New) counterTH = 1;
+  else if (THdata_Map > THdata_New) counterTH = 2;
 
-  if(HBdata_Map< HBdata_New) counterHB = 1;
- else if (HBdata_Map> HBdata_New) counterHB = 2;
+  if (LAdata_Map < LAdata_New) counterLA = 1;
+  else if (LAdata_Map > LAdata_New) counterLA = 2;
 
-  if(LGdata_Map< LGdata_New) counterLG = 1;
- else if (LGdata_Map> LGdata_New) counterLG = 2;
- 
-  if(MGdata_Map< MGdata_New) counterMG = 1;
- else if (MGdata_Map> MGdata_New) counterMG = 2;
-      }
+  if (HAdata_Map < HAdata_New) counterHA = 1;
+  else if (HAdata_Map > HAdata_New) counterHA = 2;
 
-unsigned long DdataMinMax(){
- Ddata_Min = from_array(Ddata[Ddata_idx])
-     >>min();
- Ddata_Max = from_array(Ddata[Ddata_idx])
-     >>max();
+  if (LBdata_Map < LBdata_New) counterLB = 1;
+  else if (LBdata_Map > LBdata_New) counterLB = 2;
+
+  if (HBdata_Map < HBdata_New) counterHB = 1;
+  else if (HBdata_Map > HBdata_New) counterHB = 2;
+
+  if (LGdata_Map < LGdata_New) counterLG = 1;
+  else if (LGdata_Map > LGdata_New) counterLG = 2;
+
+  if (MGdata_Map < MGdata_New) counterMG = 1;
+  else if (MGdata_Map > MGdata_New) counterMG = 2;
 }
