@@ -1,7 +1,7 @@
 
-#define CONSTRAIN_HIGH 1000000
-#define CONSTRAIN_LOW 10000
-#define NUM_READINGS 10
+#define CONSTRAIN_HIGH 3000000
+#define CONSTRAIN_LOW 1000
+#define NUM_READINGS 5
 
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
@@ -205,7 +205,51 @@ void loop() {
     Ddata_Min = constrain (Ddata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
     Ddata_Max = constrain (Ddata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
 
+    if (THdata[THdata_idx] < THdata_Min) THdata_Min = THdata[THdata_idx];
+    if (THdata[THdata_idx] > THdata_Max) THdata_Max = THdata[THdata_idx];
+    THdata_Min = constrain (THdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    THdata_Max = constrain (THdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
 
+    
+    if (LAdata[LAdata_idx] < LAdata_Min) LAdata_Min = LAdata[LAdata_idx];
+    if (LAdata[LAdata_idx] > LAdata_Max) LAdata_Max = LAdata[LAdata_idx];
+    LAdata_Min = constrain (LAdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    LAdata_Max = constrain (LAdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+
+    
+    if (HAdata[HAdata_idx] < HAdata_Min) HAdata_Min = HAdata[HAdata_idx];
+    if (HAdata[HAdata_idx] > HAdata_Max) HAdata_Max = HAdata[HAdata_idx];
+    HAdata_Min = constrain (HAdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    HAdata_Max = constrain (HAdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    
+    
+    if (LBdata[LBdata_idx] < LBdata_Min) LBdata_Min = LBdata[LBdata_idx];
+    if (LBdata[LBdata_idx] > LBdata_Max) LBdata_Max = LBdata[LBdata_idx];
+    LBdata_Min = constrain (LBdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    LBdata_Max = constrain (LBdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+
+  
+    
+    if (HBdata[HBdata_idx] < HBdata_Min) HBdata_Min = HBdata[HBdata_idx];
+    if (HBdata[HBdata_idx] > HBdata_Max) HBdata_Max = HBdata[HBdata_idx];
+    HBdata_Min = constrain (HBdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    HBdata_Max = constrain (HBdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+  
+    
+    if (LGdata[LGdata_idx] < LGdata_Min) LGdata_Min = LGdata[LGdata_idx];
+    if (LGdata[LGdata_idx] > LGdata_Max) LGdata_Max = LGdata[LGdata_idx];
+    LGdata_Min = constrain (LGdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    LGdata_Max = constrain (LGdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+
+
+    
+    if (MGdata[MGdata_idx] < MGdata_Min) MGdata_Min = MGdata[MGdata_idx];
+    if (MGdata[MGdata_idx] > MGdata_Max) MGdata_Max = MGdata[MGdata_idx];
+    MGdata_Min = constrain (MGdata_Min, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+    MGdata_Max = constrain (MGdata_Max, CONSTRAIN_LOW, CONSTRAIN_HIGH);
+  
+
+    
     Ddata_idx++;
     THdata_idx++;
     LAdata_idx++;
@@ -251,14 +295,14 @@ void loop() {
 
 
 
-    Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 10, 180);
-    THdata_Map = map(THdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
-    LAdata_Map = map(LAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
-    HAdata_Map = map(HAdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
-    LBdata_Map = map(LBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
-    HBdata_Map = map(HBdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
-    LGdata_Map = map(LGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
-    MGdata_Map = map(MGdata_prom, CONSTRAIN_LOW, CONSTRAIN_HIGH, 10, 1000);
+    Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 0, 10);
+    THdata_Map = map(THdata_prom, THdata_Min, THdata_Max, 0, 10);
+    LAdata_Map = map(LAdata_prom, LAdata_Min, LAdata_Max, 0, 10);
+    HAdata_Map = map(HAdata_prom, HAdata_Min, HAdata_Max, 0, 10);
+    LBdata_Map = map(LBdata_prom, LBdata_Min, LBdata_Max, 0, 10);
+    HBdata_Map = map(HBdata_prom, HBdata_Min, HBdata_Max, 0, 10);
+    LGdata_Map = map(LGdata_prom, LGdata_Min, LGdata_Max, 0, 10);
+    MGdata_Map = map(MGdata_prom, MGdata_Min, MGdata_Max, 0, 10);
 
 
 
@@ -269,8 +313,51 @@ void loop() {
     Serial.print(" , ");
     Serial.print(Ddata_Min);
     Serial.print(" , ");
-    Serial.println(Ddata_Max);
-
+    Serial.print(Ddata_Max);
+    Serial.print(" - ");
+    Serial.print(THdata_Map);
+    Serial.print(" , ");
+    Serial.print(THdata_Min);
+    Serial.print(" , ");
+    Serial.print(THdata_Max);
+    Serial.print(" - ");
+    Serial.print(LAdata_Map);
+    Serial.print(" , ");
+    Serial.print(LAdata_Min);
+    Serial.print(" , ");
+    Serial.print(LAdata_Max);
+    Serial.print(" - ");
+    Serial.print(HAdata_Map);
+    Serial.print(" , ");
+    Serial.print(HAdata_Min);
+    Serial.print(" , ");
+    Serial.print(HAdata_Max);
+    Serial.print(" - ");
+    Serial.print(LBdata_Map);
+    Serial.print(" , ");
+    Serial.print(LBdata_Min);
+    Serial.print(" , ");
+    Serial.print(LBdata_Max);
+    Serial.print(" - ");
+    Serial.print(HBdata_Map);
+    Serial.print(" , ");
+    Serial.print(HBdata_Min);
+    Serial.print(" , ");
+    Serial.print(HBdata_Max);
+    Serial.print(" - ");
+    Serial.print(LGdata_Map);
+    Serial.print(" , ");
+    Serial.print(LGdata_Min);
+    Serial.print(" , ");
+    Serial.print(LGdata_Max);
+    Serial.print(" - ");
+    Serial.print(MGdata_Map);
+    Serial.print(" , ");
+    Serial.print(MGdata_Min);
+    Serial.print(" , ");
+    Serial.println(MGdata_Max);
+    
+        
     //    Serial.print(Ddata_Map);
     //    Serial.print(" , ");
     //    Serial.print(counterD);
