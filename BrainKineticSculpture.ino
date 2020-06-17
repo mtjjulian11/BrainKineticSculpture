@@ -1,7 +1,7 @@
 
 #define CONSTRAIN_HIGH 3000000
-#define CONSTRAIN_LOW 1000
-#define NUM_READINGS 5
+#define CONSTRAIN_LOW 500
+#define NUM_READINGS 10
 
 // ---------------------- Libraries ------------------------
 #include <Brain.h>
@@ -76,24 +76,24 @@ unsigned long New_HBdata_prom[NUM_READINGS];
 unsigned long New_LGdata_prom[NUM_READINGS];
 unsigned long New_MGdata_prom[NUM_READINGS];
 
-unsigned long Ddata_Min = CONSTRAIN_HIGH;
-unsigned long THdata_Min = CONSTRAIN_HIGH;
-unsigned long LAdata_Min = CONSTRAIN_HIGH;
-unsigned long HAdata_Min = CONSTRAIN_HIGH;
-unsigned long LBdata_Min = CONSTRAIN_HIGH;
-unsigned long HBdata_Min = CONSTRAIN_HIGH;
-unsigned long LGdata_Min = CONSTRAIN_HIGH;
-unsigned long MGdata_Min = CONSTRAIN_HIGH;
+unsigned long Ddata_Min = 0xFFFFFFFF;
+unsigned long THdata_Min = 0xFFFFFFFF;
+unsigned long LAdata_Min = 0xFFFFFFFF;
+unsigned long HAdata_Min = 0xFFFFFFFF;
+unsigned long LBdata_Min = 0xFFFFFFFF;
+unsigned long HBdata_Min = 0xFFFFFFFF;
+unsigned long LGdata_Min = 0xFFFFFFFF;
+unsigned long MGdata_Min = 0xFFFFFFFF;
 
 
-unsigned long Ddata_Max = CONSTRAIN_LOW;
-unsigned long THdata_Max = CONSTRAIN_LOW;
-unsigned long LAdata_Max = CONSTRAIN_LOW;
-unsigned long HAdata_Max = CONSTRAIN_LOW;
-unsigned long LBdata_Max = CONSTRAIN_LOW;
-unsigned long HBdata_Max = CONSTRAIN_LOW;
-unsigned long LGdata_Max = CONSTRAIN_LOW;
-unsigned long MGdata_Max = CONSTRAIN_LOW;
+unsigned long Ddata_Max = 0;
+unsigned long THdata_Max = 0;
+unsigned long LAdata_Max = 0;
+unsigned long HAdata_Max = 0;
+unsigned long LBdata_Max = 0;
+unsigned long HBdata_Max = 0;
+unsigned long LGdata_Max = 0;
+unsigned long MGdata_Max = 0;
 
 int counterD;
 int counterTH;
@@ -295,14 +295,14 @@ void loop() {
 
 
 
-    Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 0, 10);
-    THdata_Map = map(THdata_prom, THdata_Min, THdata_Max, 0, 10);
-    LAdata_Map = map(LAdata_prom, LAdata_Min, LAdata_Max, 0, 10);
-    HAdata_Map = map(HAdata_prom, HAdata_Min, HAdata_Max, 0, 10);
-    LBdata_Map = map(LBdata_prom, LBdata_Min, LBdata_Max, 0, 10);
-    HBdata_Map = map(HBdata_prom, HBdata_Min, HBdata_Max, 0, 10);
-    LGdata_Map = map(LGdata_prom, LGdata_Min, LGdata_Max, 0, 10);
-    MGdata_Map = map(MGdata_prom, MGdata_Min, MGdata_Max, 0, 10);
+    Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 10, 200);
+    THdata_Map = map(THdata_prom, THdata_Min, THdata_Max, 10, 100);
+    LAdata_Map = map(LAdata_prom, LAdata_Min, LAdata_Max, 10, 100);
+    HAdata_Map = map(HAdata_prom, HAdata_Min, HAdata_Max, 10, 100);
+    LBdata_Map = map(LBdata_prom, LBdata_Min, LBdata_Max, 10, 100);
+    HBdata_Map = map(HBdata_prom, HBdata_Min, HBdata_Max, 10, 100);
+    LGdata_Map = map(LGdata_prom, LGdata_Min, LGdata_Max, 10, 100);
+    MGdata_Map = map(MGdata_prom, MGdata_Min, MGdata_Max, 10, 100);
 
 
 
