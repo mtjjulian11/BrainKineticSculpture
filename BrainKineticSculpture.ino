@@ -1,6 +1,7 @@
 
 #define CONSTRAIN_HIGH 3000000
 #define CONSTRAIN_LOW 0
+#define MAP_RES 500
 #define NUM_READINGS 10
 
 // ---------------------- Libraries ------------------------
@@ -137,41 +138,7 @@ void setup() {
   // Start the hardware serial.
   Serial.begin(9600);
 
-  //Obtenemos los 5 primeros valores
-  for (int i = 0; i < NUM_READINGS; i++) {
-    while (!brain.update()) {}
-
-    Ddata[i] = brain.readDelta();
-    THdata[i] = brain.readTheta();
-    LAdata[i] = brain.readLowAlpha();
-    HAdata[i] = brain.readHighAlpha();
-    LBdata[i] = brain.readLowBeta();
-    HBdata[i] = brain.readHighBeta();
-    LGdata[i] = brain.readLowGamma();
-    MGdata[i] = brain.readMidGamma();
-
-
-    Ddata_avg = Ddata_avg + Ddata[i];
-    THdata_avg = THdata_avg + THdata[i];
-    LAdata_avg = LAdata_avg + LAdata[i];
-    HAdata_avg = HAdata_avg + HAdata[i];
-    LBdata_avg = LBdata_avg + LBdata[i];
-    HBdata_avg = HBdata_avg + HBdata[i];
-    LGdata_avg = LGdata_avg + LGdata[i];
-    MGdata_avg = MGdata_avg + MGdata[i];
-
   }
-
-  Ddata_idx = NUM_READINGS;
-  THdata_idx = NUM_READINGS;
-  LAdata_idx = NUM_READINGS;
-  HAdata_idx = NUM_READINGS;
-  LBdata_idx = NUM_READINGS;
-  HBdata_idx = NUM_READINGS;
-  LGdata_idx = NUM_READINGS;
-  MGdata_idx = NUM_READINGS;
-
-}
 
 
 //------------------------------------- LOOP ------------------------------------------
@@ -193,27 +160,35 @@ void loop() {
 
     if (Ddata_idx == NUM_READINGS ) {
       Ddata_idx = 0;
+      
     }
     if ( THdata_idx == NUM_READINGS) {
       THdata_idx = 0;
+      
     }
     if (LAdata_idx == NUM_READINGS) {
       LAdata_idx = 0;
+      ;
     }
     if (HAdata_idx == NUM_READINGS) {
       HAdata_idx = 0;
+      
     }
     if (LBdata == NUM_READINGS) {
       LBdata_idx = 0;
+      
     }
     if (HBdata_idx == NUM_READINGS) {
       HBdata_idx = 0;
+      
     }
     if (LGdata_idx == NUM_READINGS) {
       LGdata_idx = 0;
+      
     }
     if (MGdata_idx == NUM_READINGS) {
       MGdata_idx = 0;
+     
     }
 
     Ddata[Ddata_idx] = brain.readDelta();
@@ -286,99 +261,77 @@ void loop() {
     LGdata_idx++;
     MGdata_idx++;
 
-    //calculamos el promedio de las medias móviles
-    Ddata_avg = 0;
-    THdata_avg = 0;
-    LAdata_avg = 0;
-    HAdata_avg = 0;
-    LBdata_avg = 0;
-    HBdata_avg = 0;
-    LGdata_avg = 0;
-    MGdata_avg = 0;
+
+    Ddata_New  = brain.readDelta();
+    THdata_New = brain.readTheta();
+    LAdata_New = brain.readLowAlpha();
+    HAdata_New = brain.readHighAlpha();
+    LBdata_New = brain.readLowBeta();
+    HBdata_New = brain.readHighBeta();
+    LGdata_New = brain.readLowGamma();
+    MGdata_New = brain.readMidGamma();
 
 
-    for (int i = 0; i < NUM_READINGS; i++) {
-      Ddata_avg += Ddata[i];
-      THdata_avg +=  THdata[i];
-      LAdata_avg +=  LAdata[i];
-      HAdata_avg +=  HAdata[i];
-      LBdata_avg +=  LBdata[i];
-      HBdata_avg +=  HBdata[i];
-      LGdata_avg +=  LGdata[i];
-      MGdata_avg +=  MGdata[i];
-    }
-
-
-    Ddata_prom = Ddata_avg / NUM_READINGS;
-    THdata_prom = THdata_avg / NUM_READINGS;
-    LAdata_prom = LAdata_avg / NUM_READINGS;
-    HAdata_prom = HAdata_avg / NUM_READINGS;
-    LBdata_prom = LBdata_avg / NUM_READINGS;
-    HBdata_prom = HBdata_avg / NUM_READINGS;
-    LGdata_prom = LGdata_avg / NUM_READINGS;
-    MGdata_prom = MGdata_avg / NUM_READINGS;
-
-
-    Ddata_Map = map(Ddata_prom, Ddata_Min, Ddata_Max, 10, 1000);
-    THdata_Map = map(THdata_prom, THdata_Min, THdata_Max, 10, 1000);
-    LAdata_Map = map(LAdata_prom, LAdata_Min, LAdata_Max, 10, 1000);
-    HAdata_Map = map(HAdata_prom, HAdata_Min, HAdata_Max, 10, 1000);
-    LBdata_Map = map(LBdata_prom, LBdata_Min, LBdata_Max, 10, 1000);
-    HBdata_Map = map(HBdata_prom, HBdata_Min, HBdata_Max, 10, 1000);
-    LGdata_Map = map(LGdata_prom, LGdata_Min, LGdata_Max, 10, 1000);
-    MGdata_Map = map(MGdata_prom, MGdata_Min, MGdata_Max, 10, 1000);
+    Ddata_Map = map(Ddata_New, Ddata_Min, Ddata_Max, 100, 1000);
+    THdata_Map = map(THdata_New, THdata_Min, THdata_Max, 100, 1000);
+    LAdata_Map = map(LAdata_New, LAdata_Min, LAdata_Max, 100, 1000);
+    HAdata_Map = map(HAdata_New, HAdata_Min, HAdata_Max, 100, 1000);
+    LBdata_Map = map(LBdata_New, LBdata_Min, LBdata_Max, 100, 1000);
+    HBdata_Map = map(HBdata_New, HBdata_Min, HBdata_Max, 100, 1000);
+    LGdata_Map = map(LGdata_New, LGdata_Min, LGdata_Max, 100, 1000);
+    MGdata_Map = map(MGdata_New, MGdata_Min, MGdata_Max, 100, 1000);
 
     
-    
-     Ddata_Map= constrain(Ddata_Map, 10, 1000);
-    THdata_Map= constrain(THdata_Map, 10, 1000);
-    LAdata_Map= constrain(LAdata_Map, 10, 1000);
-    HAdata_Map= constrain(HAdata_Map, 10, 1000);
-    LBdata_Map= constrain(LBdata_Map, 10, 1000);
-    HBdata_Map= constrain(HBdata_Map, 10, 1000);
-    LGdata_Map= constrain(LGdata_Map, 10, 1000);
-    MGdata_Map= constrain(MGdata_Map, 10, 1000);
    
+//     Ddata_Map= constrain(Ddata_Map, , 200);
+//    THdata_Map= constrain(THdata_Map, 10, 200);
+//    LAdata_Map= constrain(LAdata_Map, 10, 200);
+//    HAdata_Map= constrain(HAdata_Map, 10, 200);
+//    LBdata_Map= constrain(LBdata_Map, 10, 200);
+//    HBdata_Map= constrain(HBdata_Map, 10, 200);
+//    LGdata_Map= constrain(LGdata_Map, 10, 200);
+//    MGdata_Map= constrain(MGdata_Map, 10, 200);
+
     if (Ddata_Map < Ddata_Min2) Ddata_Min2 = Ddata_Map;
     if (Ddata_Map > Ddata_Max2) Ddata_Max2 = Ddata_Map;
-    //if(Ddata_Max2> 1000 ) Ddata_Max2 = 0;
-    //if(Ddata_Min2< 10 ) Ddata_Min = 0xFFFFFFFF;
+    if(Ddata_Max2> 1000 ) Ddata_Max2 = 0;
+    if(Ddata_Min2< 10 ) Ddata_Min = 0xFFFFFFFF;
     
     if (THdata_Map < THdata_Min2) THdata_Min2 = THdata_Map;
     if (THdata_Map > THdata_Max2) THdata_Max2 = THdata_Map;
-    //if(THdata_Max2> 1000 ) THdata_Max2 = 0;
-    //if(THdata_Min2< 10 ) THdata_Min = 0xFFFFFFFF;
+    if(THdata_Max2> 1000 ) THdata_Max2 = 0;
+    if(THdata_Min2< 10 ) THdata_Min = 0xFFFFFFFF;
 
     if (LAdata_Map < LAdata_Min2) LAdata_Min2 = LAdata_Map;
     if (LAdata_Map > LAdata_Max2) LAdata_Max2 = LAdata_Map;
-    //if(LAdata_Max2> 1000 ) LAdata_Max2 = 0;
-    //if(LAdata_Min2< 10 ) LAdata_Min = 0xFFFFFFFF;
+    if(LAdata_Max2> 1000 ) LAdata_Max2 = 0;
+    if(LAdata_Min2< 10 ) LAdata_Min = 0xFFFFFFFF;
 
     if (HAdata_Map < HAdata_Min2) HAdata_Min2 = HAdata_Map;
     if (HAdata_Map > HAdata_Max2) HAdata_Max2 = HAdata_Map;
-    //if(HAdata_Max2> 1000 ) HAdata_Max2 = 0;
-    //if(HAdata_Min2< 10 ) HAdata_Min = 0xFFFFFFFF;
+    if(HAdata_Max2> 1000 ) HAdata_Max2 = 0;
+    if(HAdata_Min2< 10 ) HAdata_Min = 0xFFFFFFFF;
     
     if (LBdata_Map < LBdata_Min2) LBdata_Min2 = LBdata_Map;
     if (LBdata_Map > LBdata_Max2) LBdata_Max2 = LBdata_Map;
-    //if(LBdata_Max2> 1000 ) LBdata_Max2 = 0;
-    //if(LBdata_Min2< 10 ) LBdata_Min = 0xFFFFFFFF;
+    if(LBdata_Max2> 1000 ) LBdata_Max2 = 0;
+    if(LBdata_Min2< 10 ) LBdata_Min = 0xFFFFFFFF;
     
     if (HBdata_Map < HBdata_Min2) HBdata_Min2 = HBdata_Map;
     if (HBdata_Map > HBdata_Max2) HBdata_Max2 = HBdata_Map;
-    //if(HBdata_Max2> 1000 ) HBdata_Max2 = 0;
-    //if(HBdata_Min2< 10 ) HBdata_Min = 0xFFFFFFFF;
+    if(HBdata_Max2> 1000 ) HBdata_Max2 = 0;
+    if(HBdata_Min2< 10 ) HBdata_Min = 0xFFFFFFFF;
 
 
     if (LGdata_Map < LGdata_Min2) LGdata_Min2 = LGdata_Map;
     if (LGdata_Map > LGdata_Max2) LGdata_Max2 = LGdata_Map;
-    //if(LGdata_Max2> 1000 ) LGdata_Max2 = 0;
-    //if(LGdata_Min2< 10 ) LGdata_Min = 0xFFFFFFFF;
+    if(LGdata_Max2> 1000 ) LGdata_Max2 = 0;
+    if(LGdata_Min2< 10 ) LGdata_Min = 0xFFFFFFFF;
 
     if (MGdata_Map < MGdata_Min2) MGdata_Min2 = MGdata_Map;
     if (MGdata_Map > MGdata_Max2) MGdata_Max2 = MGdata_Map;
-    //if(MGdata_Max2> 1000 ) MGdata_Max2 = 0;
-    //if(MGdata_Min2< 10 ) MGdata_Min = 0xFFFFFFFF;
+    if(MGdata_Max2> 1000 ) MGdata_Max2 = 0;
+    if(MGdata_Min2< 10 ) MGdata_Min = 0xFFFFFFFF;
 
     
     Ddata_Map2 = map(Ddata_Map, Ddata_Min2, Ddata_Max2, 10, 100);
@@ -403,30 +356,63 @@ void loop() {
 
     
     Serial.print(brain.readSignalQuality());
-    Serial.print("    ----    ");
+    Serial.print("   ---   ");
     
     Serial.print(Ddata_Map2);
     Serial.print("   ,   ");
+    Serial.print(Ddata_Min2);
+    Serial.print(" , ");
+    Serial.print(Ddata_Max2);
+    Serial.print("   -   ");
     
     Serial.print(THdata_Map2);
     Serial.print("   ,   ");
+    
+    Serial.print(THdata_Min2);
+    Serial.print(" , ");
+    Serial.print(THdata_Max2);
+    Serial.print("   -   ");
      
     Serial.print(LAdata_Map2);
     Serial.print("   ,   ");
+    Serial.print(LAdata_Min2);
+    Serial.print(" , ");
+    Serial.print(LAdata_Max2);
+    Serial.print("   -   ");
 
     Serial.print(HAdata_Map2);
     Serial.print("   ,   ");
+     Serial.print(HAdata_Min2);
+    Serial.print(" , ");
+    Serial.print(HAdata_Max2);
+    Serial.print("   -   ");
     
     Serial.print(LBdata_Map2);
     Serial.print("   ,   ");
+    Serial.print(LBdata_Min2);
+    Serial.print(" , ");
+    Serial.print(LBdata_Max2);
+    Serial.print("   -   ");
     
     Serial.print(HBdata_Map2);
     Serial.print("   ,   ");
+    Serial.print(HBdata_Min2);
+    Serial.print(" , ");
+    Serial.print(HBdata_Max2);
+    Serial.print("   -   ");
     
     Serial.print(LGdata_Map2);
     Serial.print("   ,   ");
+    Serial.print(LGdata_Min2);
+    Serial.print(" , ");
+    Serial.print(LGdata_Max2);
+    Serial.print("   -   ");
     
-    Serial.println(MGdata_Map2);
+    Serial.print(MGdata_Map2);
+    Serial.print(" ,  ");
+    Serial.print(MGdata_Min2);
+    Serial.print(" , ");
+    Serial.println(MGdata_Max2);
     
     
 //    Serial.print(brain.readSignalQuality());
@@ -495,6 +481,7 @@ void loop() {
     HBdata_New = HBdata_Map;
     LGdata_New = LGdata_Map ;
     MGdata_New = MGdata_Map;
+
 
 
 
