@@ -1,7 +1,7 @@
 
 #define CONSTRAIN_HIGH 3000000
-#define CONSTRAIN_LOW 0
-#define MAP_RES 500
+#define CONSTRAIN_LOW 1000
+
 #define NUM_READINGS 10
 
 // ---------------------- Libraries ------------------------
@@ -168,7 +168,7 @@ void loop() {
     }
     if (LAdata_idx == NUM_READINGS) {
       LAdata_idx = 0;
-      ;
+      
     }
     if (HAdata_idx == NUM_READINGS) {
       HAdata_idx = 0;
@@ -283,14 +283,14 @@ void loop() {
 
     
    
-//     Ddata_Map= constrain(Ddata_Map, , 200);
-//    THdata_Map= constrain(THdata_Map, 10, 200);
-//    LAdata_Map= constrain(LAdata_Map, 10, 200);
-//    HAdata_Map= constrain(HAdata_Map, 10, 200);
-//    LBdata_Map= constrain(LBdata_Map, 10, 200);
-//    HBdata_Map= constrain(HBdata_Map, 10, 200);
-//    LGdata_Map= constrain(LGdata_Map, 10, 200);
-//    MGdata_Map= constrain(MGdata_Map, 10, 200);
+     Ddata_Map= constrain(Ddata_Map, 100, 1000);
+    THdata_Map= constrain(THdata_Map, 100, 1000);
+    LAdata_Map= constrain(LAdata_Map, 100, 1000);
+    HAdata_Map= constrain(HAdata_Map, 100, 1000);
+    LBdata_Map= constrain(LBdata_Map, 100, 1000);
+    HBdata_Map= constrain(HBdata_Map, 100, 1000);
+    LGdata_Map= constrain(LGdata_Map, 100, 1000);
+    MGdata_Map= constrain(MGdata_Map, 100, 1000);
 
     if (Ddata_Map < Ddata_Min2) Ddata_Min2 = Ddata_Map;
     if (Ddata_Map > Ddata_Max2) Ddata_Max2 = Ddata_Map;
@@ -356,63 +356,43 @@ void loop() {
 
     
     Serial.print(brain.readSignalQuality());
-    Serial.print("   ---   ");
+    Serial.print(",");
+
+    Serial.print(brain.readMeditation());
+       Serial.print(",");
+    Serial.print(brain.readAttention());
+       Serial.print(",");
+             
     
     Serial.print(Ddata_Map2);
-    Serial.print("   ,   ");
-    Serial.print(Ddata_Min2);
-    Serial.print(" , ");
-    Serial.print(Ddata_Max2);
-    Serial.print("   -   ");
+   Serial.print(",");
     
     Serial.print(THdata_Map2);
-    Serial.print("   ,   ");
     
-    Serial.print(THdata_Min2);
-    Serial.print(" , ");
-    Serial.print(THdata_Max2);
-    Serial.print("   -   ");
+    Serial.print(",");
      
     Serial.print(LAdata_Map2);
-    Serial.print("   ,   ");
-    Serial.print(LAdata_Min2);
-    Serial.print(" , ");
-    Serial.print(LAdata_Max2);
-    Serial.print("   -   ");
+ 
+    Serial.print(",");
 
     Serial.print(HAdata_Map2);
-    Serial.print("   ,   ");
-     Serial.print(HAdata_Min2);
-    Serial.print(" , ");
-    Serial.print(HAdata_Max2);
-    Serial.print("   -   ");
+    
+    Serial.print(",");
     
     Serial.print(LBdata_Map2);
-    Serial.print("   ,   ");
-    Serial.print(LBdata_Min2);
-    Serial.print(" , ");
-    Serial.print(LBdata_Max2);
-    Serial.print("   -   ");
+ 
+    Serial.print(",");
     
     Serial.print(HBdata_Map2);
-    Serial.print("   ,   ");
-    Serial.print(HBdata_Min2);
-    Serial.print(" , ");
-    Serial.print(HBdata_Max2);
-    Serial.print("   -   ");
+  
+    Serial.print(",");
     
     Serial.print(LGdata_Map2);
-    Serial.print("   ,   ");
-    Serial.print(LGdata_Min2);
-    Serial.print(" , ");
-    Serial.print(LGdata_Max2);
-    Serial.print("   -   ");
+
+    Serial.print(",");
     
-    Serial.print(MGdata_Map2);
-    Serial.print(" ,  ");
-    Serial.print(MGdata_Min2);
-    Serial.print(" , ");
-    Serial.println(MGdata_Max2);
+    Serial.println(MGdata_Map2);
+  
     
     
 //    Serial.print(brain.readSignalQuality());
