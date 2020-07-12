@@ -145,6 +145,7 @@ void setup() {
 //------------------------------------- LOOP ------------------------------------------
 
 void loop() {
+  float positions[8];
 
 
 
@@ -265,7 +266,7 @@ void loop() {
     LGdata_avg = 0;
     MGdata_avg = 0;
 
-   for (int i = 0; i < NUM_READINGS; i++) {
+    for (int i = 0; i < NUM_READINGS; i++) {
       Ddata_avg += New_Ddata_prom[i];
       THdata_avg += New_THdata_prom[i];
       LAdata_avg +=  New_LAdata_prom[i];
@@ -357,20 +358,35 @@ void loop() {
 
 
     Ddata_Map2 = map(Ddata_Map, Ddata_Min2, Ddata_Max2, 10, 100);
+    positions[0] = Ddata_Map2;
 
-    THdata_Map2 = map(THdata_Map, THdata_Min2, THdata_Max2, 10, 100);
+    THdata_Map2 = map(THdata_Map, THdata_Min2, THdata_Max2, 100, 19000);
+    positions[1] = THdata_Map2;
+    
+      LAdata_Map2 = map(LAdata_Map, LAdata_Min2, LAdata_Max2, 100, 19000);
+    positions[2] = LAdata_Map2;
+    
+      HAdata_Map2 = map(HAdata_Map, HAdata_Min2, HAdata_Max2, 100, 19000);
+    positions[3] = HAdata_Map2;
+      
+      LBdata_Map2 = map(LBdata_Map, LBdata_Min2, LBdata_Max2, 100, 19000);
+    positions[4] = LBdata_Map2;
+      
+      HBdata_Map2 = map(HBdata_Map, HBdata_Min2, HBdata_Max2, 100, 19000);
+    positions[5] = HBdata_Map2;
+      
+      LGdata_Map2 = map(LGdata_Map, LGdata_Min2, LGdata_Max2, 100, 19000);
+    positions[6] = LGdata_Map2;
+      
+      MGdata_Map2 = map(MGdata_Map, MGdata_Min2, MGdata_Max2, 100, 19000);
+    positions[7] = MGdata_Map2;
 
-    LAdata_Map2 = map(LAdata_Map, LAdata_Min2, LAdata_Max2, 10, 100);
+    for (int i=0; i<8; i++){
+      Serial.print("Enviando a la posicion: ");
+      Serial.println(positions[i]);
+      delay(1000);
+    }
 
-    HAdata_Map2 = map(HAdata_Map, HAdata_Min2, HAdata_Max2, 10, 100);
-
-    LBdata_Map2 = map(LBdata_Map, LBdata_Min2, LBdata_Max2, 10, 100);
-
-    HBdata_Map2 = map(HBdata_Map, HBdata_Min2, HBdata_Max2, 10, 100);
-
-    LGdata_Map2 = map(LGdata_Map, LGdata_Min2, LGdata_Max2, 10, 100);
-
-    MGdata_Map2 = map(MGdata_Map, MGdata_Min2, MGdata_Max2, 10, 100);
 
     New_Ddata_prom[Ddata_idx] = Ddata_Map2;
     New_THdata_prom[THdata_idx] = THdata_Map2;
@@ -380,7 +396,7 @@ void loop() {
     New_HBdata_prom[HBdata_idx] = HBdata_Map2;
     New_LGdata_prom[LGdata_idx] = LGdata_Map2;
     New_MGdata_prom[MGdata_idx] = MGdata_Map2;
-    
+
 
     Serial.print(brain.readSignalQuality());
     Serial.print(" - ");
