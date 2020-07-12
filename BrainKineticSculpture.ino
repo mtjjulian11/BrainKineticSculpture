@@ -4,14 +4,46 @@
 
 #define NUM_READINGS 10
 
+
+//-------------------------- Stepper Motor -------------
+
+#define dirPin 2
+#define stepPin 3
+#define motorInterfaceType 1
+
+
 // ---------------------- Libraries ------------------------
+
+// -----------HeadSet
+
 #include <Brain.h>
 
+// --------- Stepper Motor
+
+#include <AccelStepper.h>
+
+
+
+
 //-----------------------  Objects ------------------------
+
+// Brain HeadSet
 Brain brain(Serial);
+
+// Stepper Motors
+AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
+
+
 // ------------------------ Variables ----------------------
 
-//Holds Delta signal value (sum)
+//-------- Motor variablez for Home
+
+const int buttonPin = 6;
+int buttonState = 0;
+
+
+//---------/Holds Delta signal value (sum)
+
 unsigned long Ddata[NUM_READINGS];
 unsigned long THdata[NUM_READINGS];
 unsigned long LAdata[NUM_READINGS];
@@ -139,14 +171,27 @@ void setup() {
   // Start the hardware serial.
   Serial.begin(9600);
 
+// Button Setup
+pinMode(buttonPin, INPUT);
+
+// Set the maximum speed and acceleration:
+  stepper.setMaxSpeed(800);
+  stepper.setAcceleration(1000);
+  //stepper.disableOutputs();
+  delay(500);
+
+// Send motor to Home
+  go_home();
+
 }
 
 
 //------------------------------------- LOOP ------------------------------------------
 
 void loop() {
+  
   float positions[8];
-
+  char wave[8]={'D','T','a','A','b','B','g','G'};
 
 
   if (brain.update()) {
@@ -357,35 +402,52 @@ void loop() {
     if (MGdata_Min2 < 10 ) MGdata_Min = 0xFFFFFFFF;
 
 
-    Ddata_Map2 = map(Ddata_Map, Ddata_Min2, Ddata_Max2, 10, 100);
+    Ddata_Map2 = map(Ddata_Map, Ddata_Min2, Ddata_Max2, 1000, 19000);
     positions[0] = Ddata_Map2;
-
-    THdata_Map2 = map(THdata_Map, THdata_Min2, THdata_Max2, 100, 19000);
+     
+    THdata_Map2 = map(THdata_Map, THdata_Min2, THdata_Max2, 1000, 19000);
     positions[1] = THdata_Map2;
     
-      LAdata_Map2 = map(LAdata_Map, LAdata_Min2, LAdata_Max2, 100, 19000);
+      LAdata_Map2 = map(LAdata_Map, LAdata_Min2, LAdata_Max2, 1000, 19000);
     positions[2] = LAdata_Map2;
     
-      HAdata_Map2 = map(HAdata_Map, HAdata_Min2, HAdata_Max2, 100, 19000);
+      HAdata_Map2 = map(HAdata_Map, HAdata_Min2, HAdata_Max2, 1000, 19000);
     positions[3] = HAdata_Map2;
       
-      LBdata_Map2 = map(LBdata_Map, LBdata_Min2, LBdata_Max2, 100, 19000);
+      LBdata_Map2 = map(LBdata_Map, LBdata_Min2, LBdata_Max2, 1000, 19000);
     positions[4] = LBdata_Map2;
       
-      HBdata_Map2 = map(HBdata_Map, HBdata_Min2, HBdata_Max2, 100, 19000);
+      HBdata_Map2 = map(HBdata_Map, HBdata_Min2, HBdata_Max2, 1000, 19000);
     positions[5] = HBdata_Map2;
       
-      LGdata_Map2 = map(LGdata_Map, LGdata_Min2, LGdata_Max2, 100, 19000);
+      LGdata_Map2 = map(LGdata_Map, LGdata_Min2, LGdata_Max2, 1000, 19000);
     positions[6] = LGdata_Map2;
       
-      MGdata_Map2 = map(MGdata_Map, MGdata_Min2, MGdata_Max2, 100, 19000);
+      MGdata_Map2 = map(MGdata_Map, MGdata_Min2, MGdata_Max2, 1000, 19000);
     positions[7] = MGdata_Map2;
 
+
+
+// -------- Print next brain wve position and send value to stepper motor every 10 seconds
+
+
     for (int i=0; i<8; i++){
+      
       Serial.print("Enviando a la posicion: ");
+      Serial.print(wave[i]);
+      Serial.print("   ,   ");
       Serial.println(positions[i]);
+
+      // Send updated mapped values to stepper motor 1
+     
+      stepper.moveTo(positions[i]);
+      stepper.runToPosition();
+      
       delay(1000);
     }
+
+
+
 
 
     New_Ddata_prom[Ddata_idx] = Ddata_Map2;
@@ -398,54 +460,54 @@ void loop() {
     New_MGdata_prom[MGdata_idx] = MGdata_Map2;
 
 
-    Serial.print(brain.readSignalQuality());
-    Serial.print(" - ");
-
-    Serial.print(brain.readMeditation());
-    Serial.print(" - ");
-
-    Serial.print(brain.readAttention());
-    Serial.print(" - ");
-
-    Serial.print(Ddata_Map2);
-    Serial.print(",");
-
-    Serial.print(Ddata_prom);
-    Serial.print(" - ");
-
-    Serial.print(THdata_Map2);
-    Serial.print(",");
-    Serial.print(THdata_prom);
-    Serial.print(" - ");
-
-    Serial.print(LAdata_Map2);
-    Serial.print(",");
-    Serial.print(LAdata_prom);
-    Serial.print(" - ");
-
-    Serial.print(HAdata_Map2);
-    Serial.print(",");
-    Serial.print(HAdata_prom);
-    Serial.print("  -  ");
-
-    Serial.print(LBdata_Map2);
-    Serial.print(",");
-    Serial.print(LBdata_prom);
-    Serial.print("  -  ");
-
-    Serial.print(HBdata_Map2);
-    Serial.print(",");
-    Serial.print(HBdata_prom);
-    Serial.print("  -  ");
-
-    Serial.print(LGdata_Map2);
-    Serial.print(",");
-    Serial.print(LGdata_prom);
-    Serial.print("  -  ");
-
-    Serial.print(MGdata_Map2);
-    Serial.print(",");
-    Serial.println(MGdata_prom);
+//    Serial.print(brain.readSignalQuality());
+//    Serial.print(" - ");
+//
+//    Serial.print(brain.readMeditation());
+//    Serial.print(" - ");
+//
+//    Serial.print(brain.readAttention());
+//    Serial.print(" - ");
+//
+//    Serial.print(Ddata_Map2);
+//    Serial.print(",");
+//
+//    Serial.print(Ddata_prom);
+//    Serial.print(" - ");
+//
+//    Serial.print(THdata_Map2);
+//    Serial.print(",");
+//    Serial.print(THdata_prom);
+//    Serial.print(" - ");
+//
+//    Serial.print(LAdata_Map2);
+//    Serial.print(",");
+//    Serial.print(LAdata_prom);
+//    Serial.print(" - ");
+//
+//    Serial.print(HAdata_Map2);
+//    Serial.print(",");
+//    Serial.print(HAdata_prom);
+//    Serial.print("  -  ");
+//
+//    Serial.print(LBdata_Map2);
+//    Serial.print(",");
+//    Serial.print(LBdata_prom);
+//    Serial.print("  -  ");
+//
+//    Serial.print(HBdata_Map2);
+//    Serial.print(",");
+//    Serial.print(HBdata_prom);
+//    Serial.print("  -  ");
+//
+//    Serial.print(LGdata_Map2);
+//    Serial.print(",");
+//    Serial.print(LGdata_prom);
+//    Serial.print("  -  ");
+//
+//    Serial.print(MGdata_Map2);
+//    Serial.print(",");
+//    Serial.println(MGdata_prom);
 
 
 
@@ -453,4 +515,14 @@ void loop() {
   }
 
 
+}
+
+void go_home() {
+  while (digitalRead(buttonPin) == HIGH) { //Lógica negativa con el final de carrera
+    Serial.println("Moviendo");
+    stepper.moveTo(-200); //Cuidado con poner un número demasiado grande!
+    stepper.runToPosition();
+    stepper.setCurrentPosition(0);
+  }
+  Serial.println("Fin home");
 }
