@@ -39,8 +39,14 @@ AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
 //-------- Motor variablez for Home
 
 const int buttonPin = 6;
+
 int buttonState = 0;
 
+const int buttonPin2 = 5;
+
+int buttonState2 = 0;
+
+int counterButton = 0;
 
 //---------/Holds Delta signal value (sum)
 
@@ -165,6 +171,10 @@ int counterHB;
 int counterLG;
 int counterMG;
 
+
+
+float positions[8];
+  
 //------------------------------------- SETUP ------------------------------------------
 
 void setup() {
@@ -173,10 +183,11 @@ void setup() {
 
 // Button Setup
 pinMode(buttonPin, INPUT);
+pinMode(buttonPin2, INPUT);
 
 // Set the maximum speed and acceleration:
-  stepper.setMaxSpeed(800);
-  stepper.setAcceleration(1000);
+  stepper.setMaxSpeed(5000);
+ stepper.setSpeed(2000);
   //stepper.disableOutputs();
   delay(500);
 
@@ -190,8 +201,7 @@ pinMode(buttonPin, INPUT);
 
 void loop() {
   
-  float positions[8];
-  char wave[8]={'D','T','a','A','b','B','g','G'};
+ buttonState2 = digitalRead(buttonPin2);
 
 
   if (brain.update()) {
@@ -428,26 +438,10 @@ void loop() {
 
 
 
-// -------- Print next brain wve position and send value to stepper motor every 10 seconds
+// -------- Print next brain wave position and send value to stepper motor every second
 
 
-    for (int i=0; i<8; i++){
-      
-      Serial.print("Enviando a la posicion: ");
-      Serial.print(wave[i]);
-      Serial.print("   ,   ");
-      Serial.println(positions[i]);
-
-      // Send updated mapped values to stepper motor 1
-     
-      stepper.moveTo(positions[i]);
-      stepper.runToPosition();
-      
-      delay(1000);
-    }
-
-
-
+ 
 
 
     New_Ddata_prom[Ddata_idx] = Ddata_Map2;
@@ -514,14 +508,109 @@ void loop() {
 
   }
 
+if (buttonState2 == LOW) {
 
+    counterButton++;
+    delay(200);
+  }
+
+ if (counterButton == 8) counterButton = 0;
+  
+     switch (counterButton) {
+
+    case 0:
+
+      stepper.moveTo(positions[1]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+      Serial.print("Theta Position =    ");
+      Serial.println(positions[1]);
+      break;
+
+    case 1:
+
+      stepper.moveTo(positions[2]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("Low Alpha Position =    ");
+      Serial.println(positions[2]);
+      break;
+
+    case 2:
+
+      stepper.moveTo(positions[3]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("High Alpha Position =    ");
+      Serial.println(positions[3]);
+      break;
+
+
+    case 3:
+
+      stepper.moveTo(positions[4]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("Low Beta Position =    ");
+      Serial.println(positions[4]);
+      break;
+
+    case 4:
+
+      stepper.moveTo(positions[5]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("High Beta Position =    ");
+      Serial.println(positions[5]);
+      break;
+
+    case 5:
+
+      stepper.moveTo(positions[6]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("Low Gamma Position =    ");
+      Serial.println(positions[6]);
+      break;
+
+    case 6:
+
+      stepper.moveTo(positions[7]);
+      stepper.setSpeed(3000);
+     stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("Mid Gamma Position =    ");
+      Serial.println(positions[7]);
+      break;
+
+    case 7:
+
+      stepper.moveTo(positions[0]);
+      stepper.setSpeed(3000);
+      stepper.speed();
+      stepper.runSpeedToPosition();
+       Serial.print("Delta Position =    ");
+      Serial.println(positions[0]);
+      break;
+
+  }
+
+  Serial.println(counterButton);
 }
 
 void go_home() {
+ 
   while (digitalRead(buttonPin) == HIGH) { //Lógica negativa con el final de carrera
     Serial.println("Moviendo");
     stepper.moveTo(-200); //Cuidado con poner un número demasiado grande!
-    stepper.runToPosition();
+    stepper.setSpeed(3000);
+    stepper.runSpeedToPosition();
     stepper.setCurrentPosition(0);
   }
   Serial.println("Fin home");
